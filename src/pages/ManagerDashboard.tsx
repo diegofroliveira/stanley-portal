@@ -1,43 +1,11 @@
 import { motion } from 'framer-motion';
-import { Package, TrendingUp, Search, Filter, RefreshCcw, Bot } from 'lucide-react';
-
-const MOCK_PRODUCTS = [
-  {
-    id: 1,
-    sku: '08003',
-    name: 'Copo Térmico Everyday Stanley | 296ml',
-    image: 'https://cdn.dooca.store/47855/products/copo-termico-everyday-stanley-296ml-polar_620x620.jpg?v=1710515155',
-    price: 189.00,
-    estoque: 12,
-    gaveta: 4,
-    vm: 2,
-    trend: '+15%'
-  },
-  {
-    id: 2,
-    sku: '08021',
-    name: 'Garrafa Térmica Classic Stanley | 946ml',
-    image: 'https://cdn.dooca.store/47855/products/garrafa-termica-classic-stanley-946ml-matte-black_620x620.jpg?v=1710515155',
-    price: 320.00,
-    estoque: 5,
-    gaveta: 1,
-    vm: 1,
-    trend: '+5%'
-  },
-  {
-    id: 3,
-    sku: '08055',
-    name: 'Caneca Térmica de Cerveja Stanley | 709ml',
-    image: 'https://cdn.dooca.store/47855/products/caneca-termica-de-cerveja-stanley-709ml-nightfall_620x620.jpg?v=1710515155',
-    price: 220.00,
-    estoque: 0,
-    gaveta: 0,
-    vm: 3,
-    trend: '-2%'
-  }
-];
+import { Package, TrendingUp, Search, Filter, RefreshCcw, Bot, Clock } from 'lucide-react';
+import { useInventory } from '../context/InventoryContext';
 
 export default function ManagerDashboard() {
+  const { products, logs } = useInventory();
+  const totalStock = products.reduce((acc, curr) => acc + curr.estoque, 0);
+  const totalVm = products.reduce((acc, curr) => acc + curr.vm, 0);
   return (
     <div className="space-y-8">
       {/* Header & Stats */}
@@ -64,8 +32,7 @@ export default function ManagerDashboard() {
             <Package className="w-8 h-8" />
           </div>
           <div>
-            <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">Estoque Total</p>
-            <p className="text-3xl font-bold">17 <span className="text-sm font-normal text-muted-foreground">itens</span></p>
+            <p className="text-3xl font-bold">{totalStock} <span className="text-sm font-normal text-muted-foreground">itens</span></p>
           </div>
         </div>
 
@@ -74,8 +41,7 @@ export default function ManagerDashboard() {
             <Package className="w-8 h-8" />
           </div>
           <div>
-            <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">Mostruário (VM)</p>
-            <p className="text-3xl font-bold">6 <span className="text-sm font-normal text-muted-foreground">itens</span></p>
+            <p className="text-3xl font-bold">{totalVm} <span className="text-sm font-normal text-muted-foreground">itens</span></p>
           </div>
         </div>
 
@@ -114,7 +80,7 @@ export default function ManagerDashboard() {
 
       {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {MOCK_PRODUCTS.map((product, index) => (
+        {products.map((product, index) => (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -170,6 +136,51 @@ export default function ManagerDashboard() {
             </div>
           </motion.div>
         ))}
+      </div>
+
+      {/* Movement Logs (MVP feature to show real-time changes) */}
+      <div className="bg-card border border-border rounded-2xl overflow-hidden mt-8">
+        <div className="p-6 border-b border-border flex items-center gap-3">
+          <Clock className="w-5 h-5 text-muted-foreground" />
+          <h2 className="text-lg font-bold">Últimas Movimentações</h2>
+        </div>
+        <div className="p-0 overflow-x-auto">
+          {logs.length === 0 ? (
+            <div className="p-8 text-center text-muted-foreground text-sm">
+              Nenhuma movimentação registrada na sessão atual. Simule no painel do Operador.
+            </div>
+          ) : (
+            <table className="w-full text-sm text-left">
+              <thead className="text-xs uppercase bg-muted/50 text-muted-foreground">
+                <tr>
+                  <th className="px-6 py-4 font-semibold">Horário</th>
+                  <th className="px-6 py-4 font-semibold">SKU</th>
+                  <th className="px-6 py-4 font-semibold">Destino</th>
+                  <th className="px-6 py-4 font-semibold">Operador</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {logs.map(log => (
+                  <motion.tr 
+                    initial={{ opacity: 0, bg: 'hsl(var(--primary)/0.1)' }} 
+                    animate={{ opacity: 1, bg: 'transparent' }} 
+                    key={log.id} 
+                    className="hover:bg-muted/50 transition-colors"
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap text-muted-foreground">{log.timestamp}</td>
+                    <td className="px-6 py-4 font-medium">{log.sku}</td>
+                    <td className="px-6 py-4">
+                      <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs font-bold uppercase tracking-wide">
+                        {log.destination}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-muted-foreground">{log.user}</td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
     </div>
   );

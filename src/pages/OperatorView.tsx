@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useInventory } from '../context/InventoryContext';
 
 type Feedback = {
   type: 'success' | 'error';
@@ -12,6 +13,8 @@ export default function OperatorView() {
   const [status, setStatus] = useState('');
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  const { moveItem } = useInventory();
 
   const STATUS_OPTIONS = ['ESTOQUE', 'GAVETA', 'MOSTRUÁRIO (VM)'];
 
@@ -58,13 +61,18 @@ export default function OperatorView() {
     }
 
     setSubmitting(true);
-    // TODO: Connect to Supabase
+    // Simulate API call for MVP
     setTimeout(() => {
+      // Actually move items in context
+      skus.forEach(sku => {
+        moveItem(sku, status);
+      });
+      
       setFeedback({ type: 'success', text: `Movimentação de ${skus.length} itens para ${status} registrada com sucesso!` });
       setSkus([]);
       setStatus('');
       setSubmitting(false);
-    }, 1000);
+    }, 800);
   };
 
   return (

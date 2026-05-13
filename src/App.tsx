@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 import { Package, LineChart, Move } from 'lucide-react';
+import { InventoryProvider } from './context/InventoryContext';
 
 const OperatorView = lazy(() => import('./pages/OperatorView'));
 const ManagerDashboard = lazy(() => import('./pages/ManagerDashboard'));
@@ -8,7 +9,8 @@ const Home = lazy(() => import('./pages/Home'));
 
 function App() {
   return (
-    <BrowserRouter>
+    <InventoryProvider>
+      <BrowserRouter>
       <div className="min-h-screen bg-background text-foreground dark">
         <header className="border-b border-border bg-card">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -38,6 +40,7 @@ function App() {
         </main>
       </div>
     </BrowserRouter>
+    </InventoryProvider>
   );
 }
 
