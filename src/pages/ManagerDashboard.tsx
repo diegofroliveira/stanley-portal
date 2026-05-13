@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Package, TrendingUp, Search, Filter } from 'lucide-react';
+import { Package, TrendingUp, Search, Filter, RefreshCcw, Bot } from 'lucide-react';
 
 const MOCK_PRODUCTS = [
   {
@@ -41,13 +41,30 @@ export default function ManagerDashboard() {
   return (
     <div className="space-y-8">
       {/* Header & Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="p-6 rounded-2xl bg-card border border-border shadow-sm flex flex-col justify-center">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-blue-500/10 text-blue-500 rounded-full">
+              <Bot className="w-5 h-5" />
+            </div>
+            <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">Robô CIGAM</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+            </span>
+            <p className="text-sm font-bold text-foreground">Sincronizado</p>
+          </div>
+          <p className="text-xs text-muted-foreground mt-1">Hoje, 14:00 (Automático)</p>
+        </div>
+
         <div className="p-6 rounded-2xl bg-card border border-border shadow-sm flex items-center gap-4">
           <div className="p-4 bg-primary/10 text-primary rounded-full">
             <Package className="w-8 h-8" />
           </div>
           <div>
-            <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">Total em Estoque</p>
+            <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">Estoque Total</p>
             <p className="text-3xl font-bold">17 <span className="text-sm font-normal text-muted-foreground">itens</span></p>
           </div>
         </div>
@@ -83,9 +100,16 @@ export default function ManagerDashboard() {
             className="w-full bg-background border border-input rounded-xl pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all"
           />
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-muted rounded-xl text-sm font-medium hover:bg-muted/80 transition-colors w-full sm:w-auto justify-center">
-          <Filter className="w-4 h-4" /> Filtros
-        </button>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <button className="flex-1 sm:flex-none items-center justify-center gap-2 px-4 py-2 bg-muted rounded-xl text-sm font-medium hover:bg-muted/80 transition-colors flex">
+            <Filter className="w-4 h-4" /> Filtros
+          </button>
+          <button 
+            className="flex-1 sm:flex-none items-center justify-center gap-2 px-4 py-2 border border-border rounded-xl text-sm font-medium hover:bg-muted transition-colors flex text-muted-foreground hover:text-foreground"
+          >
+            <RefreshCcw className="w-4 h-4" /> Forçar Sync
+          </button>
+        </div>
       </div>
 
       {/* Product Grid */}
