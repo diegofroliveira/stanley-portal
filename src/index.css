@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* colors:
+#394e6b
+#46b280
+#df3e60
+#ec7522
+#edc668
+ */
+
+:root {
+	/* Default (Stanley) */
+	--background: 60 14% 97%;
+	--foreground: 240 3% 7%;
+
+	--card: 0 0% 100%;
+	--card-foreground: 240 3% 7%;
+
+	--border: 0 0% 90%;
+	--input: 0 0% 92%;
+	--ring: 240 3% 7%;
+
+	/* Default fallback values, will be overridden by JS */
+	--primary-color: #394e6b;
+	--secondary-color: #46b280;
+
+	/* CTAs/buttons (black) */
+	--primary: 240 3% 7%;
+	--primary-foreground: 0 0% 100%;
+
+	--secondary: 240 11% 96%;
+	--secondary-foreground: 240 3% 7%;
+
+	--muted: 240 11% 96%;
+	--muted-foreground: 0 0% 44%;
+
+	--accent: 45 35% 91%;
+	--accent-foreground: 240 3% 7%;
+
+	--font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	--radius-card: 24px;
+	--shadow-card: 0 24px 60px rgba(0, 0, 0, 0.12);
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	min-height: 100vh;
+	background-color: hsl(var(--background));
+	color: hsl(var(--foreground));
+	font-family: var(--font-sans);
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+	min-height: 100vh;
+}
+
+img,
+svg,
+video {
+	display: block;
+	max-width: 100%;
+}
+
+::selection {
+	background: hsl(var(--primary) / 0.18);
+	color: hsl(var(--foreground));
+}
