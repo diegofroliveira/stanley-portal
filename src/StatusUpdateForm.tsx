@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useTenant } from './context/TenantContext';
 import { supabase } from './lib/supabaseClient';
-const STATUS_SUGGESTIONS = ['ESTOQUE', 'GAVETA', 'VM'];
+const STATUS_SUGGESTIONS = ['ESTOQUE', 'GAVETA', 'MOSTRUÁRIO (VM)'];
 const GMT3_OFFSET_MINUTES = -180;
 
 type Props = {
