@@ -70,13 +70,14 @@ export const resolveEasynumbersLogoStorageUrl = (preset?: string | null) => {
 	return `${supabaseUrl}/storage/v1/object/public/tenant-logos/${isDark ? 'easynumbers-white.png' : 'easynumbers.png'}`;
 };
 
+import ENLogo from '../assets/en-logo.svg';
+
 export const resolveEasynumbersLogoLocalUrl = (preset?: string | null) => {
-	const isDark = (preset || '').toLowerCase() === 'dark';
-	return isDark ? '/easynumbers-white.png' : '/easynumbers.png';
+	return ENLogo;
 };
 
 export const resolveEasynumbersLogoUrl = (preset?: string | null) =>
-	isLocalhost() ? resolveEasynumbersLogoLocalUrl(preset) : resolveEasynumbersLogoStorageUrl(preset);
+	isLocalhost() ? resolveEasynumbersLogoLocalUrl(preset) : resolveEasynumbersLogoStorageUrl(preset) || ENLogo;
 
 export const buildCategorySalesFromProducts = (
 	items: Array<{

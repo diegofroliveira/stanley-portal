@@ -10,6 +10,7 @@ import { useCigamStatus } from '../hooks/useCigamStatus';
 import {
 	resolveEasynumbersLogoStorageUrl,
 	resolveEasynumbersLogoUrl,
+	resolveEasynumbersLogoLocalUrl,
 	resolveMadeBySarkStorageUrl,
 	resolveMadeBySarkUrl,
 	resolveSarkLogoStorageUrl,
@@ -48,7 +49,7 @@ const Dashboard = ({
 	const madeByFallbackUrl = resolveMadeBySarkStorageUrl();
 	const brandLogoFallback = resolveSarkLogoStorageUrl(uiPreset);
 	const easynumbersLogo = resolveEasynumbersLogoUrl(uiPreset);
-	const easynumbersFallback = resolveEasynumbersLogoStorageUrl(uiPreset);
+	const easynumbersFallback = resolveEasynumbersLogoLocalUrl(uiPreset);
 	const [brandLogoSrc, setBrandLogoSrc] = useState(logoUrl);
 	const [madeBySrc, setMadeBySrc] = useState(madeBySarkUrl);
 	const [easynumbersSrc, setEasynumbersSrc] = useState(easynumbersLogo);
