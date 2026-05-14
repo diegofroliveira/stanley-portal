@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTenant } from '../context/TenantContext';
 import { useTheme } from '../context/ThemeContext';
 import { useDashboardData } from '../hooks/useDashboardData';
+import { useCigamStatus } from '../hooks/useCigamStatus';
 import {
 	resolveEasynumbersLogoStorageUrl,
 	resolveEasynumbersLogoUrl,
@@ -15,6 +16,7 @@ import {
 	resolveSarkLogoStorageUrl,
 } from '../utils/helpers';
 import ClientsPage from './ClientsPage';
+import InventoryPage from './InventoryPage';
 import OverviewPage from './OverviewPage';
 import ProductsPage from './ProductsPage';
 import SellersPage from './SellersPage';
@@ -34,13 +36,14 @@ const Dashboard = ({
 	onOpenImport: () => void;
 	canImport: boolean;
 	canOpenStatusForm?: boolean;
-	initialPage?: 'overview' | 'clientes' | 'vendedores';
+	initialPage?: 'overview' | 'clientes' | 'vendedores' | 'estoque';
 	initialSurface?: 'dashboard' | 'products';
 }) => {
 	const navigate = useNavigate();
 	const { tenant } = useTenant();
 	const tenantId = tenant?.id;
 	const { logoUrl, primaryColor, secondaryColor, companyName, uiPreset } = useTheme();
+	const { cigam } = useCigamStatus(tenantId);
 	const madeBySarkUrl = resolveMadeBySarkUrl();
 	const madeByFallbackUrl = resolveMadeBySarkStorageUrl();
 	const brandLogoFallback = resolveSarkLogoStorageUrl(uiPreset);
@@ -49,7 +52,7 @@ const Dashboard = ({
 	const [brandLogoSrc, setBrandLogoSrc] = useState(logoUrl);
 	const [madeBySrc, setMadeBySrc] = useState(madeBySarkUrl);
 	const [easynumbersSrc, setEasynumbersSrc] = useState(easynumbersLogo);
-	const [page, setPage] = useState<'overview' | 'clientes' | 'vendedores'>(initialPage);
+	const [page, setPage] = useState<'overview' | 'clientes' | 'vendedores' | 'estoque'>(initialPage);
 	const [surface, setSurface] = useState<'dashboard' | 'products'>(initialSurface);
 
 	const { products, setProducts, clientes, vendedores, categorySales, history, salesTrend, loading } =
@@ -105,6 +108,18 @@ const Dashboard = ({
 								</select>
 							</div>
 							<div className="ml-auto flex items-center gap-3 text-foreground">
+								{/* CIGAM Sync Indicator */}
+								{cigam && (
+									<div
+										title={cigam.last_synced_at ? `Última sync: ${new Date(cigam.last_synced_at).toLocaleString('pt-BR')}` : 'CIGAM não sincronizado'}
+										className="flex items-center gap-1.5 text-xs text-muted-foreground"
+									>
+										<span
+											className={`h-2 w-2 rounded-full ${cigam.sync_status === 'success' ? 'bg-emerald-500 animate-pulse' : cigam.sync_status === 'error' ? 'bg-red-500' : cigam.sync_status === 'running' ? 'bg-yellow-400 animate-pulse' : 'bg-muted-foreground/40'}`}
+										/>
+										<span className="hidden sm:inline">CIGAM</span>
+									</div>
+								)}
 								{easynumbersSrc ? (
 									<img
 										src={easynumbersSrc}
@@ -118,13 +133,14 @@ const Dashboard = ({
 									/>
 								) : null}
 								{canImport && (
-									<div className="flex items-center gap-3 bg-surface border border-border/50 rounded-full px-4 py-1.5 mr-2">
-										<div className="relative flex h-2 w-2">
-											<span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-											<span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-										</div>
-										<span className="text-[10px] font-bold uppercase tracking-widest text-emerald-500">Robô CIGAM Ativo</span>
-									</div>
+									<button
+										type="button"
+										onClick={onOpenImport}
+										className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/50 text-xl transition hover:border-border"
+										title="Importar dados"
+										aria-label="Importar dados">
+										<FiUploadCloud />
+									</button>
 								)}
 								{canOpenStatusForm && (
 								<button
@@ -156,6 +172,7 @@ const Dashboard = ({
 							<Title>
 								{page === 'overview' && surface === 'dashboard' && 'Como está a operação hoje?'}
 								{page === 'overview' && surface === 'products' && 'Produtos'}
+								{page === 'estoque' && 'Posição do Estoque'}
 								{page === 'clientes' && 'Clientes'}
 								{page === 'vendedores' && 'Vendedores'}
 							</Title>
@@ -165,6 +182,7 @@ const Dashboard = ({
 									{(
 										[
 											{ key: 'overview', label: 'Dashboard', path: '/' },
+											{ key: 'estoque', label: 'Estoque', path: '/estoque' },
 											{ key: 'clientes', label: 'Clientes', path: '/clients' },
 											{ key: 'vendedores', label: 'Vendedores', path: '/sellers' },
 										] as const
@@ -218,6 +236,13 @@ const Dashboard = ({
 						/>
 					)}
 
+					{page === 'estoque' && (
+						<InventoryPage
+							tenantId={tenantId}
+							primaryColor={primaryColor}
+						/>
+					)}
+
 					{page === 'clientes' && (
 						<ClientsPage
 							clientes={clientes}
@@ -257,3 +282,4 @@ const Dashboard = ({
 };
 
 export default Dashboard;
+

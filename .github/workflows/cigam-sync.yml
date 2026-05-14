@@ -1,0 +1,59 @@
+name: CIGAM Sync
+
+on:
+  # Run every hour
+  schedule:
+    - cron: '0 * * * *'
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      tenant_slug:
+        description: 'Tenant slug to sync (leave empty for all active tenants)'
+        required: false
+        default: ''
+
+jobs:
+  sync:
+    name: Sync CIGAM → Supabase
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: cigam-bot/package-lock.json
+
+      - name: Install dependencies
+        working-directory: cigam-bot
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: cigam-bot
+        run: npx playwright install chromium --with-deps
+
+      - name: Run CIGAM Bot
+        working-directory: cigam-bot
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          CIGAM_USER: ${{ secrets.CIGAM_USER }}
+          CIGAM_PASS: ${{ secrets.CIGAM_PASS }}
+          CIGAM_KEY: ${{ secrets.CIGAM_KEY }}
+          CIGAM_USER2: ${{ secrets.CIGAM_USER2 }}
+          CIGAM_PASS2: ${{ secrets.CIGAM_PASS2 }}
+          TENANT_SLUG: ${{ github.event.inputs.tenant_slug || '' }}
+        run: npm start
+
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cigam-bot-logs
+          path: cigam-bot/logs/
+          retention-days: 7
