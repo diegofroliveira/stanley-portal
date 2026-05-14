@@ -127,7 +127,7 @@ const Dashboard = ({
 									<img
 										src={easynumbersSrc}
 										alt="EasyNumbers"
-										className="pointer-events-none h-8 w-auto sm:h-10 mr-2"
+										className="pointer-events-none h-6 w-auto sm:h-8 mr-2"
 										onError={() => {
 											if (easynumbersFallback && easynumbersSrc !== easynumbersFallback) {
 												setEasynumbersSrc(easynumbersFallback);

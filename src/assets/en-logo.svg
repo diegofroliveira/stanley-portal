@@ -1,9 +1,15 @@
-<svg viewBox="0 0 150 80" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 165 100" xmlns="http://www.w3.org/2000/svg">
   <g fill="currentColor">
-    <polygon points="0,5 50,5 40,25 0,25" />
-    <polygon points="0,32 40,32 30,52 0,52" />
-    <polygon points="0,59 30,59 20,79 0,79" />
-    <polygon points="45,79 70,5 95,5 70,79" />
-    <polygon points="85,79 115,5 150,5 120,79" />
+    <!-- E Top Bar -->
+    <polygon points="0,0 80,0 69.6,26 0,26" />
+    <!-- E Middle Bar -->
+    <polygon points="0,37 65.2,37 54.8,63 0,63" />
+    <!-- E Bottom Bar -->
+    <polygon points="0,74 50.4,74 40,100 0,100" />
+    
+    <!-- N First Stroke -->
+    <polygon points="95,0 117,0 77,100 55,100" />
+    <!-- N Second Stroke -->
+    <polygon points="129,0 164,0 124,100 89,100" />
   </g>
 </svg>
