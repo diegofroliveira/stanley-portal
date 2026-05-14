@@ -177,7 +177,7 @@ const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
 								className="h-6 w-auto object-contain"
 								onError={() => {
 									if (companyName.toLowerCase().includes('stanley')) {
-										setBrandLogoSrc('https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Stanley_Logo.svg/1280px-Stanley_Logo.svg.png');
+										setBrandLogoSrc('https://cdn.worldvectorlogo.com/logos/stanley-logo.svg');
 									} else if (brandLogoFallback && brandLogoSrc !== brandLogoFallback) {
 										setBrandLogoSrc(brandLogoFallback);
 									}
@@ -263,7 +263,7 @@ const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
 								alt="Made by SARK"
 								className="h-6 w-auto object-contain sm:h-8 scale-[0.50]"
 								onError={() => {
-									setMadeBySrc('https://jqqfphjkopkcoxxfmman.supabase.co/storage/v1/object/public/tenant-logos/made-by-sark.png');
+									setMadeBySrc('https://placehold.co/400x100/111/eee?text=SARK&font=montserrat');
 								}}
 							/>
 						) : (
