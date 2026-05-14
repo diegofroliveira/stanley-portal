@@ -75,9 +75,13 @@ const InventoryPage = ({ tenantId, primaryColor }: Props) => {
 
       // Group by product
       const grouped: Record<string, GroupedProduct> = {};
-      (data as InventoryRow[]).forEach((row) => {
-        const prod = row.products;
+      const rows = (data as any[]) || [];
+      
+      rows.forEach((row) => {
+        // Handle both object and array response from Supabase join
+        const prod = Array.isArray(row.products) ? row.products[0] : row.products;
         if (!prod) return;
+        
         if (!grouped[prod.id]) {
           grouped[prod.id] = {
             product_id: prod.id,
@@ -93,8 +97,12 @@ const InventoryPage = ({ tenantId, primaryColor }: Props) => {
             last_updated_at: row.last_updated_at,
           };
         }
-        const loc = row.location as 'ESTOQUE' | 'GAVETA' | 'MOSTRUARIO';
-        grouped[prod.id][loc] = row.quantity;
+        
+        const loc = row.location as string;
+        if (loc === 'ESTOQUE') grouped[prod.id].ESTOQUE = row.quantity;
+        else if (loc === 'GAVETA') grouped[prod.id].GAVETA = row.quantity;
+        else if (loc === 'MOSTRUARIO') grouped[prod.id].MOSTRUARIO = row.quantity;
+        
         grouped[prod.id].total += row.quantity;
         if (row.last_updated_at > grouped[prod.id].last_updated_at) {
           grouped[prod.id].last_updated_at = row.last_updated_at;
@@ -165,7 +173,12 @@ const InventoryPage = ({ tenantId, primaryColor }: Props) => {
       {/* Summary chips */}
       <div className="flex flex-wrap gap-3">
         {(['ESTOQUE', 'GAVETA', 'MOSTRUARIO'] as const).map((loc) => {
-          const total = inventory.reduce((sum, p) => sum + p[loc], 0);
+          const total = inventory.reduce((sum, p) => {
+            if (loc === 'ESTOQUE') return sum + p.ESTOQUE;
+            if (loc === 'GAVETA') return sum + p.GAVETA;
+            if (loc === 'MOSTRUARIO') return sum + p.MOSTRUARIO;
+            return sum;
+          }, 0);
           return (
             <div
               key={loc}

@@ -376,6 +376,19 @@ const App = () => {
 				}
 			/>
 			<Route
+				path="/estoque"
+				element={
+					<Dashboard
+						onLogout={handleLogout}
+						onOpenStatusForm={() => navigate('/status-update')}
+						onOpenImport={() => navigate('/import')}
+						canImport={isAdmin}
+						canOpenStatusForm={isAdmin}
+						initialPage="estoque"
+					/>
+				}
+			/>
+			<Route
 				path="/sellers"
 				element={
 					<Dashboard
