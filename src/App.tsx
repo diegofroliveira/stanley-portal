@@ -1,5 +1,5 @@
 import type { Session } from '@supabase/supabase-js';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import './App.css';
 import Dashboard from './components/Dashboard';
@@ -401,7 +401,7 @@ const App = () => {
 					/>
 				}
 			/>
-			{isAdmin && (
+			{isAdmin && session && (
 				<Route
 					path="/status-update"
 					element={<StatusUpdateForm session={session} onBack={() => navigate('/')} />}

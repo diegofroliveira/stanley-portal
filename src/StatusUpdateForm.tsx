@@ -1,6 +1,6 @@
 import type { Session } from '@supabase/supabase-js';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useTenant } from './context/TenantContext';
 import { supabase } from './lib/supabaseClient';
 const STATUS_SUGGESTIONS = ['ESTOQUE', 'GAVETA', 'MOSTRUÁRIO (VM)'];
