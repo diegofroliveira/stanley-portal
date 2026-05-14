@@ -291,7 +291,7 @@ const Dashboard = ({
 					<img
 						src={madeBySrc}
 						alt="Made by SARK"
-						className="h-6 w-auto object-contain sm:h-8"
+						className="h-4 w-auto object-contain sm:h-5 opacity-80"
 						onError={() => {
 							if (madeByFallbackUrl && madeBySrc !== madeByFallbackUrl) {
 								setMadeBySrc(madeByFallbackUrl);
