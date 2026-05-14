@@ -132,6 +132,16 @@ const Dashboard = ({
 										}}
 									/>
 								) : null}
+								{cigam?.is_active && (
+									<div className="flex items-center gap-2 rounded-full border border-border/50 px-3 py-1.5" title={cigam.sync_status === 'error' ? cigam.sync_error_message || 'Erro no sync' : 'Sync CIGAM ativo'}>
+										<div className={`h-2 w-2 rounded-full animate-pulse ${cigam.sync_status === 'running' ? 'bg-blue-500' :
+											cigam.sync_status === 'success' ? 'bg-green-500' :
+												cigam.sync_status === 'error' ? 'bg-red-500' : 'bg-muted-foreground'
+											}`} />
+										<span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">CIGAM</span>
+									</div>
+								)}
+
 								{canImport && (
 									<button
 										type="button"

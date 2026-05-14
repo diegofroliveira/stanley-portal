@@ -1,20 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 
-type InventoryRow = {
-  id: string;
-  location: string;
-  quantity: number;
-  last_updated_at: string;
-  products: {
-    id: string;
-    sku: string;
-    name: string;
-    barcode: string | null;
-    image: string | null;
-    price: number | null;
-  } | null;
-};
+
 
 type GroupedProduct = {
   product_id: string;
