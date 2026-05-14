@@ -70,7 +70,7 @@ export const resolveEasynumbersLogoStorageUrl = (preset?: string | null) => {
 	return `${supabaseUrl}/storage/v1/object/public/tenant-logos/${isDark ? 'easynumbers-white.png' : 'easynumbers.png'}`;
 };
 
-import ENLogo from '../assets/en-logo.svg';
+import ENLogo from '../assets/en-logo.png';
 
 export const resolveEasynumbersLogoLocalUrl = (preset?: string | null) => {
 	return ENLogo;
