@@ -26,7 +26,7 @@ export const resolveMadeBySarkUrl = () => {
 	const supabaseUrl = import.meta.env.VITE_SUPABASE_URL ?? '';
 	const storageUrl = supabaseUrl
 		? `${supabaseUrl}/storage/v1/object/public/tenant-logos/made-by-sark.png`
-		: '';
+		: 'https://jqqfphjkopkcoxxfmman.supabase.co/storage/v1/object/public/tenant-logos/made-by-sark.png';
 	if (isLocalhost()) return '/made-by-sark.png';
 	return storageUrl;
 };
@@ -46,8 +46,7 @@ export const resolveSarkLogoStorageUrl = (preset?: string | null) => {
 		: import.meta.env.VITE_SARK_LOGO_BLACK_URL;
 	if (explicit) return explicit;
 
-	const supabaseUrl = import.meta.env.VITE_SUPABASE_URL ?? '';
-	if (!supabaseUrl) return '';
+	const supabaseUrl = import.meta.env.VITE_SUPABASE_URL ?? 'https://jqqfphjkopkcoxxfmman.supabase.co';
 	return `${supabaseUrl}/storage/v1/object/public/tenant-logos/${isDark ? 'sark-branco.png' : 'sark-preto.png'}`;
 };
 

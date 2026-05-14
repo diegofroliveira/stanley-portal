@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { BiListCheck } from 'react-icons/bi';
+import { BiCog, BiListCheck } from 'react-icons/bi';
 import { FiUploadCloud } from 'react-icons/fi';
 import { LuLogOut } from 'react-icons/lu';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +14,7 @@ import {
 	resolveMadeBySarkUrl,
 	resolveSarkLogoStorageUrl,
 } from '../utils/helpers';
+import CigamConfigPage from './CigamConfigPage';
 import ClientsPage from './ClientsPage';
 import InventoryPage from './InventoryPage';
 import OverviewPage from './OverviewPage';
@@ -86,7 +87,9 @@ const Dashboard = ({
 									alt={companyName}
 									className="h-8 w-auto object-contain sm:h-9"
 									onError={() => {
-										if (brandLogoFallback && brandLogoSrc !== brandLogoFallback) {
+										if (companyName.toLowerCase().includes('stanley')) {
+											setBrandLogoSrc('https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Stanley_Logo.svg/1280px-Stanley_Logo.svg.png');
+										} else if (brandLogoFallback && brandLogoSrc !== brandLogoFallback) {
 											setBrandLogoSrc(brandLogoFallback);
 										}
 									}}
@@ -161,6 +164,14 @@ const Dashboard = ({
 									<BiListCheck />
 								</button>
 								)}
+								<button
+									type="button"
+									onClick={() => setPage('cigam-config' as any)}
+									className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/50 text-xl transition hover:border-border ${page === ('cigam-config' as any) ? 'bg-primary text-primary-foreground' : ''}`}
+									title="Configuração CIGAM"
+									aria-label="Configuração CIGAM">
+									<BiCog />
+								</button>
 								<button
 									type="button"
 									onClick={onLogout}
@@ -266,6 +277,8 @@ const Dashboard = ({
 							primaryColor={primaryColor}
 							secondaryColor={secondaryColor}
 						/>
+					{page === ('cigam-config' as any) && (
+						<CigamConfigPage tenantId={tenantId!} />
 					)}
 				</div>
 			</main>
@@ -277,9 +290,7 @@ const Dashboard = ({
 						alt="Made by SARK"
 						className="h-6 w-auto object-contain sm:h-8 scale-[0.50]"
 						onError={() => {
-							if (madeByFallbackUrl && madeBySrc !== madeByFallbackUrl) {
-								setMadeBySrc(madeByFallbackUrl);
-							}
+							setMadeBySrc('https://jqqfphjkopkcoxxfmman.supabase.co/storage/v1/object/public/tenant-logos/made-by-sark.png');
 						}}
 					/>
 				) : (
