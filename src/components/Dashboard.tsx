@@ -277,6 +277,8 @@ const Dashboard = ({
 							primaryColor={primaryColor}
 							secondaryColor={secondaryColor}
 						/>
+					)}
+
 					{page === ('cigam-config' as any) && (
 						<CigamConfigPage tenantId={tenantId!} />
 					)}
