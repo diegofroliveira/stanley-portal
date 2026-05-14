@@ -261,9 +261,11 @@ const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
 							<img
 								src={madeBySrc}
 								alt="Made by SARK"
-								className="h-6 w-auto object-contain sm:h-8 scale-[0.50]"
+								className="h-6 w-auto object-contain sm:h-8"
 								onError={() => {
-									setMadeBySrc('https://placehold.co/400x100/111/eee?text=SARK&font=montserrat');
+									if (madeByFallbackUrl && madeBySrc !== madeByFallbackUrl) {
+										setMadeBySrc(madeByFallbackUrl);
+									}
 								}}
 							/>
 						) : (

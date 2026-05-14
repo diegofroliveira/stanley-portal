@@ -1,5 +1,8 @@
 import type { Client, HistoryItem, Product, Seller } from '../types';
 
+import ENLogo from '../assets/en-logo.png';
+import SarkMadeByLogo from '../assets/made-by-sark.jpg';
+
 export const isLocalhost = () => {
 	if (typeof window === 'undefined') return false;
 	const hostname = window.location.hostname.toLowerCase();
@@ -22,21 +25,11 @@ export const translateAuthError = (message: string) => {
 export const resolveMadeBySarkUrl = () => {
 	const explicit = import.meta.env.VITE_MADE_BY_SARK_URL ?? '';
 	if (explicit) return explicit;
-
-	const supabaseUrl = import.meta.env.VITE_SUPABASE_URL ?? '';
-	const storageUrl = supabaseUrl
-		? `${supabaseUrl}/storage/v1/object/public/tenant-logos/made-by-sark.png`
-		: 'https://jqqfphjkopkcoxxfmman.supabase.co/storage/v1/object/public/tenant-logos/made-by-sark.png';
-	if (isLocalhost()) return '/made-by-sark.png';
-	return storageUrl;
+	return SarkMadeByLogo;
 };
 
 export const resolveMadeBySarkStorageUrl = () => {
-	const explicit = import.meta.env.VITE_MADE_BY_SARK_URL ?? '';
-	if (explicit) return explicit;
-
-	const supabaseUrl = import.meta.env.VITE_SUPABASE_URL ?? '';
-	return supabaseUrl ? `${supabaseUrl}/storage/v1/object/public/tenant-logos/made-by-sark.png` : '';
+	return SarkMadeByLogo;
 };
 
 export const resolveSarkLogoStorageUrl = (preset?: string | null) => {
@@ -69,8 +62,6 @@ export const resolveEasynumbersLogoStorageUrl = (preset?: string | null) => {
 	if (!supabaseUrl) return '';
 	return `${supabaseUrl}/storage/v1/object/public/tenant-logos/${isDark ? 'easynumbers-white.png' : 'easynumbers.png'}`;
 };
-
-import ENLogo from '../assets/en-logo.png';
 
 export const resolveEasynumbersLogoLocalUrl = (preset?: string | null) => {
 	return ENLogo;
