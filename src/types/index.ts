@@ -12,6 +12,7 @@ export interface Product {
 	price?: number;
 	totalSold?: number;
 	image?: string;
+	externalUrl?: string;
 }
 
 export interface CategorySale {

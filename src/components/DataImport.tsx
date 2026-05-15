@@ -70,8 +70,8 @@ const IMPORT_CONFIG: Record<ImportKind, ImportConfig> = {
 const CSV_GUIDE: Record<ImportKind, CsvGuide> = {
 	products: {
 		required: ['sku', 'name'],
-		optional: ['barcode', 'status', 'is_active', 'location', 'qty', 'min', 'price', 'total_sold', 'image_url'],
-		example: 'sku,name,barcode,status,is_active,location,qty,min,price,total_sold,image_url',
+		optional: ['barcode', 'status', 'is_active', 'location', 'qty', 'min', 'price', 'total_sold', 'image_url', 'external_url'],
+		example: 'sku,name,barcode,status,is_active,location,qty,min,price,total_sold,image_url,external_url',
 		notes: [
 			'Use este arquivo antes de importar itens de venda.',
 			'`is_active=false` bloqueia o SKU para novas vendas.',
@@ -346,6 +346,7 @@ const DataImport = ({ onBack }: Props) => {
 						location: row.location?.trim() || undefined,
 						image_url: imageUrl || undefined,
 						image: imageUrl || undefined,
+						external_url: row.external_url?.trim() || undefined,
 					};
 				});
 				const uploaded = await upsertRows(sanitized as Record<string, unknown>[]);

@@ -70,6 +70,7 @@ export async function fetchProducts(tenantId: string): Promise<Product[]> {
 			price: num('price') ?? currency('preco_venda', 'Preço de Venda Normal') ?? undefined,
 			totalSold: num('total_sold') ?? undefined,
 			image: str('image_url', 'image', 'foto', 'Foto') || undefined,
+			externalUrl: str('external_url', 'product_url', 'url_produto', 'link', 'link_produto') || undefined,
 		};
 	});
 }

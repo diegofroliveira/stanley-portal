@@ -14,6 +14,7 @@ type ProductDraft = {
 	price: string;
 	barcode: string;
 	image: string;
+	externalUrl: string;
 };
 
 const ProductsPage = ({
@@ -40,6 +41,7 @@ const ProductsPage = ({
 	const [editSaving, setEditSaving] = useState(false);
 	const [editError, setEditError] = useState('');
 	const [isEditPanelOpen, setIsEditPanelOpen] = useState(false);
+	const [viewMode, setViewMode] = useState<'table' | 'catalog'>('table');
 
 	const isCriticalProduct = (p: Product) => {
 		const zeroStock = (p.qty || 0) <= 0;
@@ -84,6 +86,7 @@ const ProductsPage = ({
 			price: product.price !== undefined ? String(product.price) : '',
 			barcode: product.barcode ?? '',
 			image: product.image ?? '',
+			externalUrl: product.externalUrl ?? '',
 		});
 		setEditDirty(false);
 		setEditError('');
@@ -131,10 +134,9 @@ const ProductsPage = ({
 		const qty = parseOptionalInteger(editDraft.qty) ?? 0;
 		const min = parseOptionalInteger(editDraft.min);
 		const price = parseOptionalNumber(editDraft.price);
-		const status = editDraft.status.trim() || 'ESTOQUE';
-		const location = editDraft.location.trim() || 'Loja principal';
 		const barcode = editDraft.barcode.trim();
 		const image = editDraft.image.trim();
+		const externalUrl = editDraft.externalUrl.trim();
 
 		const payload = {
 			status,
@@ -144,6 +146,7 @@ const ProductsPage = ({
 			price,
 			barcode: barcode ? barcode : null,
 			image: image ? image : null,
+			external_url: externalUrl ? externalUrl : null,
 		};
 
 		try {
@@ -161,6 +164,7 @@ const ProductsPage = ({
 					price: price ?? undefined,
 					barcode: barcode ? barcode : undefined,
 					image: image ? image : undefined,
+					externalUrl: externalUrl ? externalUrl : undefined,
 				});
 			}
 			setEditDirty(false);
@@ -181,6 +185,20 @@ const ProductsPage = ({
 						</p>
 					</div>
 					<div className="flex flex-wrap gap-2">
+						<div className="mr-2 flex rounded-full bg-muted p-1">
+							<button
+								type="button"
+								onClick={() => setViewMode('table')}
+								className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest transition ${viewMode === 'table' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}>
+								Tabela
+							</button>
+							<button
+								type="button"
+								onClick={() => setViewMode('catalog')}
+								className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest transition ${viewMode === 'catalog' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}>
+								Catálogo
+							</button>
+						</div>
 						<button
 							type="button"
 							onClick={onBack}
@@ -237,98 +255,168 @@ const ProductsPage = ({
 				)}
 			</div>
 				<div className={`grid gap-6 ${isEditPanelOpen ? 'lg:grid-cols-[minmax(0,1fr)_340px]' : ''}`}>
-					<Card interactive={false} className="border border-border/30 bg-muted">
-						<div className="overflow-auto max-h-[640px]">
-							<table className="min-w-full divide-y divide-black/5 text-sm">
-								<thead className="sticky top-0 z-10 bg-muted text-left text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
-									<tr>
-									<th className="px-4 py-3">Foto</th>
-									<th className="px-4 py-3">SKU</th>
-									<th className="px-4 py-3">Produto</th>
-									<th className="px-4 py-3">Status</th>
-									<th className="px-4 py-3">Local</th>
-									<th className="px-4 py-3">Qtd</th>
-									<th className="px-4 py-3">Mínimo</th>
-									<th className="px-4 py-3">Preço</th>
-									<th className="px-4 py-3">Total vendido</th>
-									<th className="px-4 py-3">Código de barras</th>
-									<th className="px-4 py-3 text-right">Ajustes</th>
-								</tr>
-							</thead>
-								<tbody className="divide-y divide-border/30 bg-card">
-									{loading && (
+					{viewMode === 'table' ? (
+						<Card interactive={false} className="border border-border/30 bg-muted">
+							<div className="overflow-auto max-h-[640px]">
+								<table className="min-w-full divide-y divide-black/5 text-sm">
+									<thead className="sticky top-0 z-10 bg-muted text-left text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
 										<tr>
-											<td colSpan={11} className="px-4 py-6 text-center text-muted-foreground">
-												Carregando…
-											</td>
-										</tr>
-									)}
-									{!loading &&
-										filteredProducts.map((product) => {
-											const isSelected = selectedProductId === product.id;
-											return (
-												<tr
-													key={product.id}
-													onClick={() => startEditProduct(product)}
-													className={`cursor-pointer hover:bg-muted/60 ${isSelected ? 'bg-primary/10' : ''}`}>
-													<td className="px-4 py-3">
-														<div className="h-12 w-12 overflow-hidden rounded-xl bg-black/5">
-															{product.image ? (
-																<img
-																	src={product.image}
-																	alt={product.name}
-																	className="h-full w-full object-cover"
-																	loading="lazy"
-																/>
-															) : (
-																<div className="flex h-full w-full items-center justify-center text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">
-																	—
-																</div>
-															)}
-														</div>
-													</td>
-													<td className="px-4 py-3 font-semibold text-foreground">{product.sku}</td>
-													<td className="px-4 py-3 text-foreground">{product.name}</td>
-													<td className="px-4 py-3">
-														<span className="rounded-full bg-black/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground">
-															{product.status}
-														</span>
-													</td>
-													<td className="px-4 py-3 text-foreground">{product.location}</td>
-													<td className="px-4 py-3 text-foreground">{product.qty}</td>
-													<td className="px-4 py-3 text-foreground">{product.min ?? '—'}</td>
-													<td className="px-4 py-3 text-foreground">
-														{product.price ? `R$ ${product.price.toLocaleString('pt-BR')}` : '—'}
-													</td>
-													<td className="px-4 py-3 text-foreground">
-														{product.totalSold ? product.totalSold.toLocaleString('pt-BR') : '—'}
-													</td>
-													<td className="px-4 py-3 text-foreground">{product.barcode ?? '—'}</td>
-													<td className="px-4 py-3 text-right">
-														<button
-															type="button"
-															onClick={(event) => {
-																event.stopPropagation();
-																startEditProduct(product);
-															}}
-															className="rounded-full border border-border/50 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground transition hover:bg-primary hover:text-primary-foreground">
-															Ajustar
-														</button>
-													</td>
-												</tr>
-											);
-										})}
-									{!loading && filteredProducts.length === 0 && (
-										<tr>
-											<td colSpan={11} className="px-4 py-6 text-center text-muted-foreground">
-												Nenhum produto encontrado com os filtros atuais.
-											</td>
-										</tr>
-									)}
-							</tbody>
-						</table>
-					</div>
-				</Card>
+										<th className="px-4 py-3">Foto</th>
+										<th className="px-4 py-3">SKU</th>
+										<th className="px-4 py-3">Produto</th>
+										<th className="px-4 py-3">Status</th>
+										<th className="px-4 py-3">Local</th>
+										<th className="px-4 py-3">Qtd</th>
+										<th className="px-4 py-3">Mínimo</th>
+										<th className="px-4 py-3">Preço</th>
+										<th className="px-4 py-3">Total vendido</th>
+										<th className="px-4 py-3">Código de barras</th>
+										<th className="px-4 py-3 text-right">Ajustes</th>
+									</tr>
+								</thead>
+									<tbody className="divide-y divide-border/30 bg-card">
+										{loading && (
+											<tr>
+												<td colSpan={11} className="px-4 py-6 text-center text-muted-foreground">
+													Carregando…
+												</td>
+											</tr>
+										)}
+										{!loading &&
+											filteredProducts.map((product) => {
+												const isSelected = selectedProductId === product.id;
+												return (
+													<tr
+														key={product.id}
+														onClick={() => startEditProduct(product)}
+														className={`cursor-pointer hover:bg-muted/60 ${isSelected ? 'bg-primary/10' : ''}`}>
+														<td className="px-4 py-3">
+															<div className="h-12 w-12 overflow-hidden rounded-xl bg-black/5">
+																{product.image ? (
+																	<img
+																		src={product.image}
+																		alt={product.name}
+																		className="h-full w-full object-cover"
+																		loading="lazy"
+																	/>
+																) : (
+																	<div className="flex h-full w-full items-center justify-center text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">
+																		—
+																	</div>
+																)}
+															</div>
+														</td>
+														<td className="px-4 py-3 font-semibold text-foreground">{product.sku}</td>
+														<td className="px-4 py-3 text-foreground">{product.name}</td>
+														<td className="px-4 py-3">
+															<span className="rounded-full bg-black/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground">
+																{product.status}
+															</span>
+														</td>
+														<td className="px-4 py-3 text-foreground">{product.location}</td>
+														<td className="px-4 py-3 text-foreground">{product.qty}</td>
+														<td className="px-4 py-3 text-foreground">{product.min ?? '—'}</td>
+														<td className="px-4 py-3 text-foreground">
+															{product.price ? `R$ ${product.price.toLocaleString('pt-BR')}` : '—'}
+														</td>
+														<td className="px-4 py-3 text-foreground">
+															{product.totalSold ? product.totalSold.toLocaleString('pt-BR') : '—'}
+														</td>
+														<td className="px-4 py-3 text-foreground">{product.barcode ?? '—'}</td>
+														<td className="px-4 py-3 text-right">
+															<button
+																type="button"
+																onClick={(event) => {
+																	event.stopPropagation();
+																	startEditProduct(product);
+																}}
+																className="rounded-full border border-border/50 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground transition hover:bg-primary hover:text-primary-foreground">
+																Ajustar
+															</button>
+														</td>
+													</tr>
+												);
+											})}
+										{!loading && filteredProducts.length === 0 && (
+											<tr>
+												<td colSpan={11} className="px-4 py-6 text-center text-muted-foreground">
+													Nenhum produto encontrado com os filtros atuais.
+												</td>
+											</tr>
+										)}
+								</tbody>
+							</table>
+						</div>
+					</Card>
+					) : (
+						<div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+							{filteredProducts.map((product) => (
+								<Card
+									key={product.id}
+									onClick={() => startEditProduct(product)}
+									className={`group overflow-hidden border border-border/30 bg-card p-0 transition-all hover:shadow-lg ${selectedProductId === product.id ? 'ring-2 ring-primary' : ''}`}>
+									<div className="relative aspect-square w-full bg-muted overflow-hidden">
+										{product.image ? (
+											<img
+												src={product.image}
+												alt={product.name}
+												className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+												loading="lazy"
+											/>
+										) : (
+											<div className="flex h-full w-full items-center justify-center text-xs uppercase tracking-widest text-muted-foreground/50">
+												Sem foto
+											</div>
+										)}
+										<div className="absolute top-3 left-3">
+											<span className="rounded-full bg-background/80 backdrop-blur-md px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-foreground shadow-sm">
+												{product.sku}
+											</span>
+										</div>
+										<div className="absolute top-3 right-3">
+											<span className={`rounded-full px-3 py-1 text-[9px] font-bold uppercase tracking-widest shadow-sm ${
+												product.qty <= 0 ? 'bg-rose-500 text-white' : 'bg-emerald-500 text-white'
+											}`}>
+												{product.qty > 0 ? `${product.qty} UN` : 'Esgotado'}
+											</span>
+										</div>
+									</div>
+									<div className="p-5">
+										<div className="mb-2 flex items-start justify-between gap-4">
+											<h3 className="font-bold text-foreground line-clamp-2 leading-tight">
+												{product.name}
+											</h3>
+											{product.price && (
+												<span className="text-sm font-black text-primary">
+													R$ {product.price.toLocaleString('pt-BR')}
+												</span>
+											)}
+										</div>
+										<div className="flex items-center justify-between mt-4">
+											<span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+												{product.location}
+											</span>
+											{product.externalUrl && (
+												<a
+													href={product.externalUrl}
+													target="_blank"
+													rel="noopener noreferrer"
+													onClick={(e) => e.stopPropagation()}
+													className="text-[10px] font-bold uppercase tracking-widest text-primary hover:underline">
+													Ver no site
+												</a>
+											)}
+										</div>
+									</div>
+								</Card>
+							))}
+							{filteredProducts.length === 0 && !loading && (
+								<div className="col-span-full py-20 text-center text-muted-foreground">
+									Nenhum produto encontrado.
+								</div>
+							)}
+						</div>
+					)}
 				{isEditPanelOpen && (
 					<Card interactive={false} className="border border-border/30 bg-muted">
 						<div className="space-y-6">
@@ -451,6 +539,17 @@ const ProductsPage = ({
 												value={editDraft.image}
 												onChange={(event) => updateDraft({ image: event.target.value })}
 												className="mt-2 block w-full rounded-xl border border-input bg-card px-3 py-2 text-sm text-foreground outline-none transition focus:border-ring/60 focus:ring-2 focus:ring-ring/25"
+											/>
+										</div>
+										<div>
+											<label className="block text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+												Link do Produto (Stanley)
+											</label>
+											<input
+												value={editDraft.externalUrl}
+												onChange={(event) => updateDraft({ externalUrl: event.target.value })}
+												className="mt-2 block w-full rounded-xl border border-input bg-card px-3 py-2 text-sm text-foreground outline-none transition focus:border-ring/60 focus:ring-2 focus:ring-ring/25"
+												placeholder="https://www.stanley-pmi.com.br/produto/..."
 											/>
 										</div>
 									</div>

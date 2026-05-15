@@ -106,6 +106,7 @@ export type ProductUpsertRow = {
 	price?: number;
 	total_sold?: number;
 	image_url?: string;
+	external_url?: string;
 	// Legacy column kept for backward compatibility with older schemas.
 	image?: string;
 };
@@ -166,7 +167,8 @@ type CanonicalField =
 	| 'min'
 	| 'price'
 	| 'total_sold'
-	| 'image_url';
+	| 'image_url'
+	| 'external_url';
 
 const HEADER_ALIASES: Record<string, CanonicalField> = {
 	sku: 'sku',
@@ -241,6 +243,11 @@ const HEADER_ALIASES: Record<string, CanonicalField> = {
 	photo: 'image_url',
 	image_url: 'image_url',
 	url_imagem: 'image_url',
+	external_url: 'external_url',
+	product_url: 'external_url',
+	url_produto: 'external_url',
+	link: 'external_url',
+	link_produto: 'external_url',
 };
 
 const parseDecimal = (value: string) => {
@@ -379,6 +386,9 @@ export const buildProductsFromCsvText = (csvText: string, tenantId: string): Csv
 			row.image_url = imageUrl;
 			row.image = imageUrl;
 		}
+
+		const externalUrl = (fields.external_url ?? '').trim();
+		if (externalUrl) row.external_url = externalUrl;
 
 		productRows.push(row);
 	}
