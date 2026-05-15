@@ -162,6 +162,15 @@ export const TenantProvider = ({ children }: { children: React.ReactNode }) => {
 	}, [tenantSlug]);
 
 	useEffect(() => {
+		const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+			if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+				void refreshTenant();
+			}
+		});
+		return () => subscription.unsubscribe();
+	}, [refreshTenant]);
+
+	useEffect(() => {
 		void refreshTenant();
 	}, [refreshTenant]);
 
