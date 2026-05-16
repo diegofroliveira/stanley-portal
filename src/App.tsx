@@ -21,6 +21,7 @@ import JoinRequestsPage from './components/settings/JoinRequestsPage';
 import { useTenant } from './context/TenantContext';
 import { supabase } from './lib/supabaseClient';
 import StatusUpdateForm from './StatusUpdateForm';
+import { UserMembership } from './types';
 
 const isOnApex = () => {
 	if (typeof window === 'undefined') return false;
@@ -33,7 +34,7 @@ const App = () => {
 	const { tenant, tenantLoading, tenantError, refreshTenant } = useTenant();
 	const [session, setSession] = useState<Session | null>(null);
 	const [checkingSession, setCheckingSession] = useState(true);
-	const [membershipRole, setMembershipRole] = useState<'admin' | 'member' | null>(null);
+	const [membership, setMembership] = useState<UserMembership | null>(null);
 	const [checkingMembership, setCheckingMembership] = useState(false);
 	const [membershipVersion, setMembershipVersion] = useState(0);
 	const bumpMembership = useCallback(() => setMembershipVersion((v) => v + 1), []);
@@ -178,12 +179,12 @@ const App = () => {
 			if (!isMounted) return;
 
 			if (error) {
-				setMembershipRole(null);
+				setMembership(null);
 				setCheckingMembership(false);
 				return;
 			}
 
-			setMembershipRole((data?.role as 'admin' | 'member' | undefined) ?? null);
+			setMembership(data as UserMembership);
 			setCheckingMembership(false);
 		};
 
@@ -284,7 +285,7 @@ const App = () => {
 
 	if (checkingMembership) return null;
 
-	if (!membershipRole) {
+	if (!membership) {
 		return (
 			<div className="min-h-screen bg-background text-foreground flex items-center justify-center px-6">
 				<div className="w-full max-w-xl rounded-[var(--radius-card)] border border-border/40 bg-card p-8 shadow-[var(--shadow-card)]">
@@ -311,7 +312,7 @@ const App = () => {
 	}
 
 	if (!tenant.isOnboarded) {
-		if (membershipRole !== 'admin') {
+		if (membership.role !== 'admin') {
 			return (
 				<div className="min-h-screen bg-background text-foreground flex items-center justify-center px-6">
 					<div className="w-full max-w-xl rounded-[var(--radius-card)] border border-border/40 bg-card p-8 shadow-[var(--shadow-card)]">
@@ -333,7 +334,7 @@ const App = () => {
 		return <Onboarding onFinish={() => void refreshTenant()} />;
 	}
 
-	const isAdmin = membershipRole === 'admin';
+	const isAdmin = membership.role === 'admin';
 
 	return (
 		<Routes>
@@ -346,6 +347,7 @@ const App = () => {
 						onOpenImport={() => navigate('/import')}
 						canImport={isAdmin}
 						canOpenStatusForm={isAdmin}
+						membership={membership}
 					/>
 				}
 			/>
@@ -359,6 +361,7 @@ const App = () => {
 						canImport={isAdmin}
 						canOpenStatusForm={isAdmin}
 						initialSurface="products"
+						membership={membership}
 					/>
 				}
 			/>
@@ -372,6 +375,7 @@ const App = () => {
 						canImport={isAdmin}
 						canOpenStatusForm={isAdmin}
 						initialPage="clientes"
+						membership={membership}
 					/>
 				}
 			/>
@@ -385,6 +389,7 @@ const App = () => {
 						canImport={isAdmin}
 						canOpenStatusForm={isAdmin}
 						initialPage="estoque"
+						membership={membership}
 					/>
 				}
 			/>
@@ -398,6 +403,7 @@ const App = () => {
 						canImport={isAdmin}
 						canOpenStatusForm={isAdmin}
 						initialPage="vendedores"
+						membership={membership}
 					/>
 				}
 			/>

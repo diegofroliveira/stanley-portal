@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { BiCog, BiListCheck } from 'react-icons/bi';
-import { FiUploadCloud } from 'react-icons/fi';
+import { FiUploadCloud, FiUserPlus } from 'react-icons/fi';
 import { LuLogOut } from 'react-icons/lu';
 import { useNavigate } from 'react-router-dom';
 import { useTenant } from '../context/TenantContext';
@@ -22,6 +22,7 @@ import OverviewPage from './OverviewPage';
 import ProductsPage from './ProductsPage';
 import SellersPage from './SellersPage';
 import { Title } from './ui/Primitives';
+import { UserMembership } from '../types';
 
 const Dashboard = ({
 	onLogout,
@@ -31,6 +32,7 @@ const Dashboard = ({
 	canOpenStatusForm = false,
 	initialPage = 'overview',
 	initialSurface = 'dashboard',
+	membership,
 }: {
 	onLogout: () => void;
 	onOpenStatusForm: () => void;
@@ -39,6 +41,7 @@ const Dashboard = ({
 	canOpenStatusForm?: boolean;
 	initialPage?: 'overview' | 'clientes' | 'vendedores' | 'estoque';
 	initialSurface?: 'dashboard' | 'products';
+	membership: UserMembership;
 }) => {
 	const navigate = useNavigate();
 	const { tenant } = useTenant();
@@ -60,8 +63,14 @@ const Dashboard = ({
 		useDashboardData(tenantId);
 
 	const locations = useMemo(
-		() => Array.from(new Set(products.map((p) => p.location))).filter(Boolean),
-		[products],
+		() => {
+			const all = Array.from(new Set(products.map((p) => p.location))).filter(Boolean);
+			if (membership.permissions?.locations?.length) {
+				return all.filter(loc => membership.permissions!.locations!.includes(loc));
+			}
+			return all;
+		},
+		[products, membership.permissions],
 	);
 
 	useEffect(() => {
@@ -173,6 +182,16 @@ const Dashboard = ({
 									aria-label="Configuração CIGAM">
 									<BiCog />
 								</button>
+								{isAdmin && (
+									<button
+										type="button"
+										onClick={() => navigate('/members')}
+										className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/50 text-xl transition hover:border-border"
+										title="Gestão de Membros"
+										aria-label="Gestão de Membros">
+										<FiUserPlus />
+									</button>
+								)}
 								<button
 									type="button"
 									onClick={onLogout}
@@ -207,7 +226,7 @@ const Dashboard = ({
 											{ key: 'clientes', label: 'Clientes', path: '/clients' },
 											{ key: 'vendedores', label: 'Vendedores', path: '/sellers' },
 										] as const
-									).map((tab) => (
+									).filter(tab => !membership.permissions?.menus?.length || membership.permissions.menus.includes(tab.key)).map((tab) => (
 										<button
 											key={tab.key}
 											type="button"
@@ -286,21 +305,25 @@ const Dashboard = ({
 				</div>
 			</main>
 
-			<footer className="flex items-center justify-center border-t border-border/20 bg-card px-6 py-4 text-xs uppercase tracking-[0.3em] text-muted-foreground sm:px-10">
-				{madeBySrc ? (
-					<img
-						src={madeBySrc}
-						alt="EasyNumbers"
-						className="h-4 w-auto object-contain sm:h-5 opacity-80"
-						onError={() => {
-							if (madeByFallbackUrl && madeBySrc !== madeByFallbackUrl) {
-								setMadeBySrc(madeByFallbackUrl);
-							}
-						}}
-					/>
-				) : (
-					<span>EasyNumbers</span>
-				)}
+			<footer className="flex items-center justify-center border-t border-border/20 bg-card px-6 py-4 text-[10px] uppercase tracking-[0.3em] text-muted-foreground sm:px-10">
+				<div className="flex items-center gap-2">
+					{madeBySrc ? (
+						<img
+							src={madeBySrc}
+							alt="EasyNumbers"
+							className="h-4 w-auto object-contain sm:h-5 opacity-80"
+							onError={() => {
+								if (madeByFallbackUrl && madeBySrc !== madeByFallbackUrl) {
+									setMadeBySrc(madeByFallbackUrl);
+								}
+							}}
+						/>
+					) : (
+						<span>EasyNumbers</span>
+					)}
+					<span className="opacity-40">|</span>
+					<span>Made with ❤️ by Sark</span>
+				</div>
 			</footer>
 		</div>
 	);

@@ -53,3 +53,18 @@ export interface KPIs {
 	quantidadeTotal: number;
 	produtosDistintos: number;
 }
+
+export interface UserPermissions {
+	menus: string[];
+	actions: string[];
+	locations?: string[];
+}
+
+export interface UserMembership {
+	tenant_id: string;
+	user_id: string;
+	role: 'admin' | 'manager' | 'operator';
+	email?: string;
+	permissions?: UserPermissions;
+	created_at?: string;
+}
