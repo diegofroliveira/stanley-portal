@@ -48,7 +48,7 @@ const InventoryPage = ({ tenantId, primaryColor }: Props) => {
         .from('inventory')
         .select(`
           id, location, quantity, last_updated_at,
-          products (id, sku, name, barcode, image, price)
+          products (id, sku, name, barcode, image_url, price)
         `)
         .eq('tenant_id', tenantId)
         .gt('quantity', 0)
@@ -74,7 +74,7 @@ const InventoryPage = ({ tenantId, primaryColor }: Props) => {
             product_id: prod.id,
             sku: prod.sku,
             name: prod.name,
-            image: prod.image,
+            image: prod.image_url,
             price: prod.price,
             barcode: prod.barcode,
             ESTOQUE: 0,

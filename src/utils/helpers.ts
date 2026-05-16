@@ -23,13 +23,11 @@ export const translateAuthError = (message: string) => {
 };
 
 export const resolveMadeBySarkUrl = () => {
-	const explicit = import.meta.env.VITE_MADE_BY_SARK_URL ?? '';
-	if (explicit) return explicit;
-	return SarkMadeByLogo;
+	return ENLogo;
 };
 
 export const resolveMadeBySarkStorageUrl = () => {
-	return SarkMadeByLogo;
+	return ENLogo;
 };
 
 export const resolveSarkLogoStorageUrl = (preset?: string | null) => {

@@ -30,7 +30,9 @@ const SellersPage = ({
 		`R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
 	const sellersSortedByRevenue = useMemo(
-		() => [...vendedores].sort((a, b) => (b.bruto || 0) - (a.bruto || 0)),
+		() => [...vendedores]
+			.filter(s => (s.bruto || 0) > 0 || (s.itens || 0) > 0)
+			.sort((a, b) => (b.bruto || 0) - (a.bruto || 0)),
 		[vendedores],
 	);
 	const sellersForDisplay = useMemo(

@@ -260,7 +260,7 @@ const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
 						{madeBySrc ? (
 							<img
 								src={madeBySrc}
-								alt="Made by SARK"
+								alt="EasyNumbers"
 								className="h-4 w-auto object-contain sm:h-5 opacity-80"
 								onError={() => {
 									if (madeByFallbackUrl && madeBySrc !== madeByFallbackUrl) {
@@ -270,7 +270,7 @@ const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
 							/>
 						) : (
 							<span className="text-xs uppercase tracking-[0.35em] text-muted-foreground">
-								Made by SARK
+								EasyNumbers
 							</span>
 						)}
 					</footer>

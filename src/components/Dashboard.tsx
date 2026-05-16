@@ -290,7 +290,7 @@ const Dashboard = ({
 				{madeBySrc ? (
 					<img
 						src={madeBySrc}
-						alt="Made by SARK"
+						alt="EasyNumbers"
 						className="h-4 w-auto object-contain sm:h-5 opacity-80"
 						onError={() => {
 							if (madeByFallbackUrl && madeBySrc !== madeByFallbackUrl) {
@@ -299,7 +299,7 @@ const Dashboard = ({
 						}}
 					/>
 				) : (
-					<span>Made by SARK</span>
+					<span>EasyNumbers</span>
 				)}
 			</footer>
 		</div>
