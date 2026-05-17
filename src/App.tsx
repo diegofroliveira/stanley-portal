@@ -164,14 +164,14 @@ const App = () => {
 			const tenantId = tenant?.id;
 
 			if (!userId || !tenantId) {
-				setMembershipRole(null);
+				setMembership(null);
 				return;
 			}
 
 			setCheckingMembership(true);
 			const { data, error } = await supabase
 				.from('tenant_members')
-				.select('role')
+				.select('role, permissions')
 				.eq('tenant_id', tenantId)
 				.eq('user_id', userId)
 				.maybeSingle();
