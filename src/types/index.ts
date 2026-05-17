@@ -68,3 +68,19 @@ export interface UserMembership {
 	permissions?: UserPermissions;
 	created_at?: string;
 }
+
+export interface FranchiseLocation {
+	id: string;
+	tenant_id: string;
+	slug: string;
+	name: string;
+	location_name: string;
+	whatsapp_number: string;
+	telegram_username?: string;
+	address: string;
+	maps_url: string;
+	instagram_handle?: string;
+	working_hours: string;
+	created_at?: string;
+	updated_at?: string;
+}

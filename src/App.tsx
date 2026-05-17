@@ -18,6 +18,8 @@ import AdminLayout from './components/admin/AdminLayout';
 import RequestsPage from './components/admin/RequestsPage';
 import TenantSettingsLayout from './components/settings/TenantSettingsLayout';
 import JoinRequestsPage from './components/settings/JoinRequestsPage';
+import PublicCatalogPage from './components/catalog/PublicCatalogPage';
+import FranchiseSettingsPage from './components/settings/FranchiseSettingsPage';
 import { useTenant } from './context/TenantContext';
 import { supabase } from './lib/supabaseClient';
 import StatusUpdateForm from './StatusUpdateForm';
@@ -214,6 +216,16 @@ const App = () => {
 	}
 
 	if (tenantLoading) return null;
+
+	const isPublicCatalog = location.pathname.startsWith('/c/');
+	if (isPublicCatalog) {
+		return (
+			<Routes>
+				<Route path="/c/:slug" element={<PublicCatalogPage />} />
+				<Route path="*" element={<Navigate to="/" replace />} />
+			</Routes>
+		);
+	}
 
 	if (location.pathname === '/accept-invite') return <AcceptInvitePage onAccepted={bumpMembership} />;
 
@@ -426,7 +438,8 @@ const App = () => {
 				{isAdmin && (
 					<Route element={<TenantSettingsLayout />}>
 						<Route path="/settings/join-requests" element={<JoinRequestsPage />} />
-						<Route path="/settings" element={<Navigate to="/settings/join-requests" replace />} />
+						<Route path="/settings/franchises" element={<FranchiseSettingsPage />} />
+						<Route path="/settings" element={<Navigate to="/settings/franchises" replace />} />
 					</Route>
 				)}
 				<Route path="*" element={<Navigate to="/" replace />} />

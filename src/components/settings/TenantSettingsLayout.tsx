@@ -13,6 +13,7 @@ const TenantSettingsLayout = () => {
   const navigate = useNavigate();
 
   const isJoinRequests = location.pathname.startsWith("/settings/join-requests");
+  const isFranchises = location.pathname.startsWith("/settings/franchises");
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -42,6 +43,15 @@ const TenantSettingsLayout = () => {
                 : "text-muted-foreground hover:text-foreground"
             }`}>
             Join requests
+          </Link>
+          <Link
+            to="/settings/franchises"
+            className={`rounded-full px-3 py-1 transition ${
+              isFranchises
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:text-foreground"
+            }`}>
+            Franquias
           </Link>
         </nav>
       </header>
