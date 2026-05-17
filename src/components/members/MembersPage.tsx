@@ -333,6 +333,7 @@ const MembersPage = ({ canInvite }: { canInvite: boolean }) => {
                                                 </button>
                                             ))}
                                         </div>
+                                    </div>
                                     <div>
                                         <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">Restringir por Local (RLS)</label>
                                         <div className="mt-2 flex flex-wrap gap-2">
