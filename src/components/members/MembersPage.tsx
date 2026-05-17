@@ -40,7 +40,7 @@ const MembersPage = ({ canInvite }: { canInvite: boolean }) => {
             setMembers(data);
             
             // Extract unique locations from products to show as options
-            const { data: prodData } = await listTenantProducts(tenantId);
+            const prodData = await listTenantProducts(tenantId);
             const locs = Array.from(new Set(prodData.map(p => p.location))).filter(Boolean);
             setAvailableLocations(locs);
         } catch (err) {
