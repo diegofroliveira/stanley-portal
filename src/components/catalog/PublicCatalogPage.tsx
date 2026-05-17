@@ -134,11 +134,11 @@ const PublicCatalogPage = () => {
 
 	if (loading) {
 		return (
-			<div className="min-h-screen bg-[#0a0a0c] text-[#f3f4f6] flex items-center justify-center">
+			<div className="min-h-screen bg-white text-black flex items-center justify-center">
 				<div className="text-center space-y-4">
-					<div className="w-12 h-12 border-4 border-[#d4af37] border-t-transparent rounded-full animate-spin mx-auto"></div>
-					<div className="text-sm font-semibold uppercase tracking-widest text-muted-foreground animate-pulse">
-						Carregando Stanley Original...
+					<div className="w-10 h-10 border-2 border-black border-t-transparent rounded-full animate-spin mx-auto"></div>
+					<div className="text-[10px] font-bold uppercase tracking-[0.25em] text-gray-500 animate-pulse">
+						Carregando Stanley 1913 BR...
 					</div>
 				</div>
 			</div>
@@ -147,14 +147,14 @@ const PublicCatalogPage = () => {
 
 	if (error || !franchise) {
 		return (
-			<div className="min-h-screen bg-[#0a0a0c] text-[#f3f4f6] flex items-center justify-center p-6">
-				<div className="max-w-md w-full text-center space-y-6 rounded-[2rem] border border-border/20 bg-card p-8 shadow-2xl">
-					<div className="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center mx-auto text-red-500 text-3xl">
+			<div className="min-h-screen bg-[#f4f4f4] text-black flex items-center justify-center p-6">
+				<div className="max-w-md w-full text-center space-y-6 bg-white p-10 border border-gray-200 shadow-sm rounded-none">
+					<div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center mx-auto text-red-600 text-3xl">
 						<FiX />
 					</div>
 					<div>
-						<h1 className="text-xl font-bold tracking-tight text-foreground">Acesso Inválido</h1>
-						<p className="text-sm text-muted-foreground mt-2">
+						<h1 className="text-sm font-bold uppercase tracking-widest text-black">Acesso Inválido</h1>
+						<p className="text-xs text-gray-500 mt-2 leading-relaxed">
 							{error || 'Não conseguimos carregar este catálogo digital.'}
 						</p>
 					</div>
@@ -166,117 +166,121 @@ const PublicCatalogPage = () => {
 	const categories = ['Todos', 'Copos', 'Canecas', 'Garrafas', 'Acessórios'];
 
 	return (
-		<div className="min-h-screen bg-[#0c0c0e] text-[#f3f4f6] font-sans selection:bg-[#d4af37] selection:text-[#0c0c0e] overflow-x-hidden">
-			{/* Top Announcement Bar */}
-			<div className="bg-[#12231e] text-[#d4af37] text-[10px] font-bold uppercase tracking-[0.25em] py-2.5 text-center px-4 border-b border-[#1b342d]">
-				✨ Catálogo Exclusivo Oficial — Estoque 100% Atualizado da Franquia
+		<div className="min-h-screen bg-white text-black font-sans antialiased selection:bg-black selection:text-white overflow-x-hidden">
+			{/* Top Announcement Bar - Pure Black, spacing like official BR site */}
+			<div className="bg-black text-white text-[9px] font-bold uppercase tracking-[0.2em] py-2.5 text-center px-4">
+				🔥 INSCREVA-SE E GANHE 10% OFF NA 1ª COMPRA | FRETE GRÁTIS ACIMA DE R$ 345 | EM ATÉ 12X SEM JUROS
 			</div>
 
-			{/* Premium Header */}
-			<header className="sticky top-0 z-40 bg-[#0c0c0e]/95 backdrop-blur-md border-b border-border/10 py-5 px-6 sm:px-12 flex flex-col md:flex-row items-center justify-between gap-4">
+			{/* Official Bright Header */}
+			<header className="sticky top-0 z-40 bg-white border-b border-gray-200 py-4 px-6 sm:px-12 flex items-center justify-between">
+				{/* Stylized Logo: Stanley Winged Bear Crest SVG + STANLEY 1913 text */}
 				<div className="flex items-center gap-3">
-					<div className="flex flex-col">
-						<div className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#d4af37]">
-							Franquia Stanley
-						</div>
-						<h1 className="text-lg font-bold tracking-tight text-foreground">{franchise.name}</h1>
-					</div>
+					<svg className="h-9 w-auto text-black fill-current" viewBox="0 0 350 70" xmlns="http://www.w3.org/2000/svg">
+						{/* Stylized Winged Bear Crown / Shield Silhouette */}
+						<path d="M12,28 L18,12 L30,20 L42,12 L48,28 L40,48 L20,48 Z" fill="currentColor" />
+						<path d="M18,52 L42,52 L45,60 L15,60 Z" fill="currentColor" />
+						{/* STANLEY Typography */}
+						<text x="64" y="49" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="900" font-size="34" letter-spacing="4">STANLEY</text>
+						{/* 1913 subtext */}
+						<text x="295" y="49" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="300" font-size="16" letter-spacing="2">1913</text>
+					</svg>
 				</div>
-				<div className="flex items-center gap-4 text-xs">
+				<div className="hidden md:flex items-center gap-6 text-[10px] font-bold uppercase tracking-widest text-gray-500">
+					<span className="text-black border-b-2 border-black pb-1">Catálogo Oficial</span>
+					<span>Estoque Integrado</span>
 					<a
 						href={franchise.maps_url}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors"
+						className="flex items-center gap-1.5 hover:text-black transition-colors"
 					>
-						<FiMapPin className="text-[#d4af37]" />
-						<span className="max-w-[200px] truncate">{franchise.address}</span>
+						<FiMapPin className="text-black" />
+						<span>{franchise.name}</span>
 					</a>
 				</div>
 			</header>
 
-			{/* Hero / CTA Traffic Section */}
-			<div className="relative py-20 px-6 sm:px-12 bg-gradient-to-b from-[#101f1a] to-[#0c0c0e] border-b border-border/10">
-				<div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#1d352e]/30 via-transparent to-transparent pointer-events-none" />
-				<div className="max-w-4xl mx-auto text-center space-y-6 relative z-10">
-					<motion.div
-						initial={{ opacity: 0, y: 15 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.6 }}
-						className="inline-flex items-center gap-2 rounded-full border border-[#d4af37]/30 bg-[#d4af37]/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#d4af37]"
-					>
-						<FiShoppingCart /> Pronto Entrega & Prontos para Retirada
-					</motion.div>
-					<motion.h2
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.6, delay: 0.1 }}
-						className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-foreground leading-[0.95]"
-					>
-						Leve a Legenda <br className="sm:hidden" />
-						<span className="text-[#d4af37]">com Você</span>
-					</motion.h2>
-					<motion.p
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.6, delay: 0.2 }}
-						className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto"
-					>
-						Explore os copos, canecas e garrafas térmicas Stanley originais. Garanta os seus agora via WhatsApp com retirada na hora ou entrega rápida!
-					</motion.p>
-
-					{/* Fast Header Store Buttons */}
-					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.6, delay: 0.3 }}
-						className="flex flex-wrap items-center justify-center gap-3 pt-2"
-					>
-						<a
-							href={`https://api.whatsapp.com/send?phone=${franchise.whatsapp_number.replace(/\D/g, '')}&text=Ol%C3%A1!%20Vim%20pelo%20cat%C3%A1logo%20online%20e%20gostaria%20de%20tirar%20uma%20d%C3%BAvida.`}
-							target="_blank"
-							rel="noopener noreferrer"
-							className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-[11px] font-bold uppercase tracking-widest text-white shadow-lg shadow-emerald-600/20 hover:bg-emerald-500 transition-all hover:-translate-y-0.5 active:translate-y-0 active:scale-98"
-						>
-							<FiPhone /> Falar com Vendedor
-						</a>
-						<a
-							href={franchise.maps_url}
-							target="_blank"
-							rel="noopener noreferrer"
-							className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-transparent px-6 py-3 text-[11px] font-bold uppercase tracking-widest text-foreground hover:bg-muted hover:border-foreground transition-all hover:-translate-y-0.5 active:translate-y-0"
-						>
-							<FiMapPin className="text-[#d4af37]" /> Como Chegar
-						</a>
-					</motion.div>
+			{/* Lifestyle Hero Section - Cream Off-White exactly like Stanley luxury template */}
+			<div className="relative py-16 px-6 sm:px-12 bg-[#f4f4f4] border-b border-gray-200">
+				<div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-8">
+					<div className="space-y-6 text-left max-w-xl">
+						<div className="inline-flex items-center gap-2 border border-black bg-white px-4 py-1 text-[9px] font-bold uppercase tracking-widest text-black">
+							⚡ Pronta Entrega na Loja
+						</div>
+						<h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-black leading-[0.95] font-sans">
+							VEM AÍ... <br />
+							<span className="text-[#000000]">Aniversário</span> <br />
+							<span className="text-gray-400">Legionários.</span>
+						</h2>
+						<p className="text-xs sm:text-sm text-gray-600 leading-relaxed font-medium">
+							Explore os copos, garrafas e canecas Stanley originais em estoque no <strong>{franchise.name}</strong>. Compre online via WhatsApp com atendimento personalizado e retirada expressa!
+						</p>
+						<div className="flex flex-wrap gap-3 pt-2">
+							<a
+								href={`https://api.whatsapp.com/send?phone=${franchise.whatsapp_number.replace(/\D/g, '')}&text=Ol%C3%A1!%20Vim%20pelo%20cat%C3%A1logo%20online%20da%20loja%20e%20gostaria%20de%20garantir%20meu%20Stanley.`}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="inline-flex items-center justify-center rounded-none bg-black text-white px-8 py-3.5 text-[10px] font-bold uppercase tracking-widest hover:bg-gray-800 transition-all border border-black"
+							>
+								Falar com Vendedor
+							</a>
+							<a
+								href={franchise.maps_url}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="inline-flex items-center justify-center rounded-none bg-white text-black border border-black px-8 py-3.5 text-[10px] font-bold uppercase tracking-widest hover:bg-gray-50 transition-all"
+							>
+								Como Chegar
+							</a>
+						</div>
+					</div>
+					
+					{/* Decorative Lifestyle Visual Element */}
+					<div className="hidden md:flex justify-center relative">
+						<div className="bg-gradient-to-tr from-[#12231e]/10 to-transparent w-80 h-80 rounded-full absolute -z-10" />
+						<div className="bg-white p-8 border border-gray-200 max-w-sm text-center space-y-4 shadow-sm">
+							<span className="text-[9px] font-bold uppercase tracking-widest text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full">
+								Estoque Oficial CIGAM
+							</span>
+							<h3 className="text-sm font-black uppercase tracking-wider text-black">
+								{franchise.name}
+							</h3>
+							<p className="text-[11px] text-gray-500 leading-relaxed">
+								Compre online, evite fretes e retire seu produto original embalado para presente em poucos minutos.
+							</p>
+						</div>
+					</div>
 				</div>
 			</div>
 
 			{/* Main Catalog Search & Filter Controls */}
-			<div className="max-w-7xl mx-auto py-10 px-6 sm:px-12 space-y-8">
-				<div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-					{/* Search */}
+			<div className="max-w-7xl mx-auto py-12 px-6 sm:px-12 space-y-10">
+				
+				{/* Search & Categories Bar */}
+				<div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-gray-100">
+					{/* Search - Clean Minimalist Box */}
 					<div className="relative flex-1 max-w-md w-full">
-						<FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground text-base pointer-events-none" />
+						<FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-black text-base pointer-events-none" />
 						<input
 							type="text"
 							value={searchQuery}
 							onChange={e => setSearchQuery(e.target.value)}
-							className="w-full rounded-full border border-border/30 bg-[#121215] py-3.5 pl-12 pr-6 text-sm outline-none focus:border-[#d4af37]/50 focus:bg-[#16161a] transition-all"
-							placeholder="Buscar copo, caneca, cor..."
+							className="w-full rounded-none border border-gray-300 bg-white py-3.5 pl-12 pr-6 text-xs outline-none focus:border-black transition-all text-black uppercase tracking-widest"
+							placeholder="BUSCAR COPAS, GARRAFAS, SKUS..."
 						/>
 					</div>
 
-					{/* Categories */}
+					{/* Categories - Sharp edge pills from template */}
 					<div className="flex flex-wrap gap-2 overflow-x-auto pb-1 scrollbar-none">
 						{categories.map(cat => (
 							<button
 								key={cat}
 								onClick={() => setActiveCategory(cat)}
-								className={`rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-widest transition-all ${
+								className={`rounded-none px-6 py-3 text-[10px] font-bold uppercase tracking-widest transition-all ${
 									activeCategory === cat
-										? 'bg-[#d4af37] text-[#0c0c0e] shadow-lg shadow-[#d4af37]/20 scale-105'
-										: 'bg-[#121215] border border-border/20 text-muted-foreground hover:text-foreground hover:border-border/50'
+										? 'bg-black text-white border border-black'
+										: 'bg-white border border-gray-200 text-gray-500 hover:text-black hover:border-black'
 								}`}
 							>
 								{cat}
@@ -285,53 +289,36 @@ const PublicCatalogPage = () => {
 					</div>
 				</div>
 
-				{/* Products Grid */}
-				<motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+				{/* Products Grid - Minimalist Clean Cards */}
+				<motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
 					<AnimatePresence mode="popLayout">
 						{filteredProducts.map(prod => {
 							const hasStock = prod.qty > 0;
-							const isLowStock = hasStock && prod.qty < 5;
 
 							return (
 								<motion.div
 									key={prod.id}
 									layout
-									initial={{ opacity: 0, scale: 0.95 }}
-									animate={{ opacity: 1, scale: 1 }}
-									exit={{ opacity: 0, scale: 0.95 }}
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									exit={{ opacity: 0 }}
 									transition={{ duration: 0.3 }}
-									whileHover={{ y: -6 }}
 									onClick={() => {
 										setSelectedProduct(prod);
 										setPurchaseQty(1);
 									}}
-									className="group cursor-pointer flex flex-col justify-between overflow-hidden rounded-3xl border border-border/20 bg-[#121215]/80 backdrop-blur-sm p-5 hover:border-[#d4af37]/30 transition-all shadow-xl shadow-black/30"
+									className="group cursor-pointer flex flex-col justify-between rounded-none border border-transparent p-1 transition-all bg-white"
 								>
 									<div>
-										{/* Badge status */}
-										<div className="flex items-center justify-between mb-4">
-											{hasStock ? (
-												isLowStock ? (
-													<span className="rounded-full bg-amber-500/10 border border-amber-500/20 px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-amber-500">
-														Últimas Unidades
-													</span>
-												) : (
-													<span className="rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-emerald-500">
-														Pronta Entrega
-													</span>
-												)
-											) : (
-												<span className="rounded-full bg-red-500/10 border border-red-500/20 px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-red-400">
-													Sob Encomenda
+										{/* Gray/Off-white Image Area exactly like template */}
+										<div className="relative aspect-square overflow-hidden rounded-none bg-[#f2f2f2] flex items-center justify-center p-6 transition-all duration-300">
+											{/* Status badge in upper-left */}
+											<div className="absolute top-3 left-3 z-10">
+												<span className="rounded-full bg-white border border-black px-2.5 py-0.5 text-[8px] font-bold uppercase tracking-wider text-black shadow-sm">
+													{hasStock ? '🔥 Pronta Entrega' : '📦 Sob Consulta'}
 												</span>
-											)}
-											<span className="text-[10px] font-bold text-muted-foreground uppercase font-mono">
-												{prod.sku}
-											</span>
-										</div>
+											</div>
 
-										{/* Product image container */}
-										<div className="relative aspect-square overflow-hidden rounded-2xl bg-black/40 flex items-center justify-center p-4">
 											{prod.image ? (
 												<img
 													src={prod.image}
@@ -339,35 +326,53 @@ const PublicCatalogPage = () => {
 													className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500"
 												/>
 											) : (
-												<div className="text-muted-foreground text-[10px] uppercase font-semibold tracking-widest">
-													Stanley Original
+												<div className="text-gray-400 text-[9px] uppercase font-bold tracking-[0.25em]">
+													Stanley 1913
 												</div>
 											)}
 										</div>
 
-										{/* Content */}
-										<h3 className="mt-4 text-sm font-bold tracking-tight text-foreground line-clamp-2 leading-tight group-hover:text-[#d4af37] transition-colors">
+										{/* Interactive E-commerce rating indicators */}
+										<div className="flex items-center gap-1 mt-3">
+											<div className="text-black text-xs">★★★★★</div>
+											<span className="text-[9px] text-gray-400 uppercase tracking-widest font-mono">
+												({prod.sku})
+											</span>
+										</div>
+
+										{/* Mini representative color dots */}
+										<div className="flex items-center gap-1 mt-1.5">
+											<span className="w-2.5 h-2.5 rounded-full bg-black border border-gray-300" />
+											<span className="w-2.5 h-2.5 rounded-full bg-[#12231e] border border-gray-300" />
+											<span className="w-2.5 h-2.5 rounded-full bg-white border border-gray-300" />
+										</div>
+
+										{/* Product Title in bold black upper/sentence case */}
+										<h3 className="mt-2 text-xs sm:text-sm font-bold uppercase tracking-wide text-black line-clamp-2 leading-tight group-hover:text-gray-500 transition-colors">
 											{prod.name}
 										</h3>
 									</div>
 
-									<div className="mt-4 pt-4 border-t border-border/10 flex items-center justify-between">
-										<div>
-											<div className="text-[10px] uppercase tracking-wider text-muted-foreground">
-												Preço Especial
-											</div>
-											<div className="text-base font-extrabold text-foreground">
-												{prod.price ? (
-													`R$ ${prod.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
-												) : (
-													<span className="text-xs text-muted-foreground font-semibold">Sob consulta</span>
-												)}
-											</div>
+									{/* Bottom Price & Button Layout */}
+									<div className="mt-3">
+										<div className="text-sm font-black text-black">
+											{prod.price ? (
+												`R$ ${prod.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
+											) : (
+												<span className="text-xs text-gray-500 font-semibold">Sob consulta</span>
+											)}
+										</div>
+										<div className="text-[10px] text-gray-400 font-medium">
+											{prod.price ? `ou em até 12x de R$ ${(prod.price / 12).toLocaleString('pt-BR', { maximumFractionDigits: 2 })} sem juros` : ''}
 										</div>
 
-										<div className="rounded-full bg-primary/10 p-2.5 text-primary group-hover:bg-[#d4af37] group-hover:text-[#0c0c0e] transition-all">
-											<FiShoppingCart className="text-sm" />
-										</div>
+										{/* Sharp corner border action button from template */}
+										<button
+											type="button"
+											className="w-full bg-white text-black border border-black group-hover:bg-black group-hover:text-white py-3.5 text-[9px] font-bold uppercase tracking-[0.2em] transition-all duration-300 rounded-none mt-4"
+										>
+											COMPRAR NO WHATSAPP
+										</button>
 									</div>
 								</motion.div>
 							);
@@ -375,15 +380,15 @@ const PublicCatalogPage = () => {
 					</AnimatePresence>
 
 					{filteredProducts.length === 0 && (
-						<div className="col-span-full py-20 text-center text-muted-foreground space-y-2">
-							<p className="text-sm font-semibold">Nenhum produto encontrado nesta busca.</p>
-							<p className="text-xs opacity-60">Tente buscar por termos diferentes ou selecione outra categoria.</p>
+						<div className="col-span-full py-20 text-center text-gray-400 space-y-2">
+							<p className="text-sm font-semibold uppercase tracking-widest text-black">Nenhum produto em estoque.</p>
+							<p className="text-xs opacity-60">Volte mais tarde ou tente filtrar por outra categoria.</p>
 						</div>
 					)}
 				</motion.div>
 			</div>
 
-			{/* Interactive Product Details & Action Modal */}
+			{/* Minimalist Product Detail & WhatsApp Modal */}
 			<AnimatePresence>
 				{selectedProduct && (
 					<div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -392,24 +397,24 @@ const PublicCatalogPage = () => {
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
 							onClick={() => setSelectedProduct(null)}
-							className="absolute inset-0 bg-black/80 backdrop-blur-md"
+							className="absolute inset-0 bg-black/60 backdrop-blur-xs"
 						/>
 						<motion.div
-							initial={{ opacity: 0, scale: 0.95, y: 20 }}
+							initial={{ opacity: 0, scale: 0.98, y: 15 }}
 							animate={{ opacity: 1, scale: 1, y: 0 }}
-							exit={{ opacity: 0, scale: 0.95, y: 20 }}
-							className="relative w-full max-w-xl overflow-hidden rounded-[2.5rem] border border-border/20 bg-[#121215] p-8 shadow-2xl z-10 max-h-[90vh] overflow-y-auto"
+							exit={{ opacity: 0, scale: 0.98, y: 15 }}
+							className="relative w-full max-w-xl overflow-hidden rounded-none border border-gray-200 bg-white p-8 shadow-2xl z-10 max-h-[90vh] overflow-y-auto"
 						>
 							<button
 								onClick={() => setSelectedProduct(null)}
-								className="absolute right-6 top-6 rounded-full border border-border/10 bg-black/35 p-2 hover:bg-muted transition-colors"
+								className="absolute right-6 top-6 rounded-none border border-gray-200 bg-white p-2 hover:bg-gray-50 transition-colors"
 							>
-								<FiX className="text-xl" />
+								<FiX className="text-lg text-black" />
 							</button>
 
 							<div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
 								{/* Image */}
-								<div className="aspect-square bg-black/45 rounded-3xl p-4 flex items-center justify-center relative">
+								<div className="aspect-square bg-[#f2f2f2] rounded-none p-6 flex items-center justify-center relative">
 									{selectedProduct.image ? (
 										<img
 											src={selectedProduct.image}
@@ -417,8 +422,8 @@ const PublicCatalogPage = () => {
 											className="max-h-full max-w-full object-contain"
 										/>
 									) : (
-										<div className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">
-											Stanley Original
+										<div className="text-[9px] text-gray-400 uppercase font-bold tracking-[0.25em]">
+											Stanley 1913
 										</div>
 									)}
 								</div>
@@ -426,60 +431,54 @@ const PublicCatalogPage = () => {
 								{/* Info */}
 								<div className="flex flex-col justify-between space-y-4">
 									<div>
-										<span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest font-mono">
+										<span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest font-mono">
 											SKU {selectedProduct.sku}
 										</span>
-										<h2 className="text-lg font-black tracking-tight text-foreground mt-1 uppercase leading-tight">
+										<h2 className="text-base font-black tracking-tight text-black mt-1 uppercase leading-tight font-sans">
 											{selectedProduct.name}
 										</h2>
 
-										<div className="mt-3 flex flex-wrap gap-2">
-											{selectedProduct.qty > 0 ? (
-												<span className="rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-emerald-500">
-													Em Estoque ({selectedProduct.qty} un)
-												</span>
-											) : (
-												<span className="rounded-full bg-red-500/10 border border-red-500/20 px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-red-400">
-													Sem Estoque Físico
-												</span>
-											)}
+										<div className="mt-2.5 flex items-center gap-1.5">
+											<span className="rounded-full bg-black px-3 py-0.5 text-[8px] font-bold uppercase tracking-widest text-white">
+												{selectedProduct.qty > 0 ? 'Disponível' : 'Sob Consulta'}
+											</span>
 										</div>
 									</div>
 
 									<div>
-										<div className="text-[10px] uppercase tracking-wider text-muted-foreground">
+										<div className="text-[9px] uppercase tracking-wider text-gray-400 font-bold">
 											Valor Unitário
 										</div>
-										<div className="text-2xl font-black text-[#d4af37]">
+										<div className="text-xl font-black text-black">
 											{selectedProduct.price ? (
 												`R$ ${selectedProduct.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
 											) : (
-												<span className="text-sm text-muted-foreground font-semibold">Sob consulta</span>
+												<span className="text-sm text-gray-400 font-semibold">Sob consulta</span>
 											)}
 										</div>
 									</div>
 
-									{/* Quantity selector */}
-									{selectedProduct.qty > 0 && (
+									{/* Quantity selector with outline sharp corners */}
+									{selectedProduct.qty >= 0 && (
 										<div className="space-y-1.5">
-											<label className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">
+											<label className="text-[9px] font-bold uppercase tracking-widest text-gray-400">
 												Quantidade
 											</label>
-											<div className="flex items-center border border-border/30 rounded-xl max-w-[120px] bg-black/30 overflow-hidden">
+											<div className="flex items-center border border-gray-300 rounded-none max-w-[120px] bg-white overflow-hidden">
 												<button
 													type="button"
 													onClick={() => setPurchaseQty(q => Math.max(1, q - 1))}
-													className="px-3 py-2 text-sm font-bold text-muted-foreground hover:bg-muted/30"
+													className="px-3.5 py-2 text-xs font-bold text-black hover:bg-gray-100"
 												>
 													-
 												</button>
-												<span className="flex-1 text-center font-bold text-sm text-foreground">
+												<span className="flex-1 text-center font-bold text-xs text-black">
 													{purchaseQty}
 												</span>
 												<button
 													type="button"
-													onClick={() => setPurchaseQty(q => Math.min(selectedProduct.qty, q + 1))}
-													className="px-3 py-2 text-sm font-bold text-muted-foreground hover:bg-muted/30"
+													onClick={() => setPurchaseQty(q => q + 1)}
+													className="px-3.5 py-2 text-xs font-bold text-black hover:bg-gray-100"
 												>
 													+
 												</button>
@@ -489,88 +488,101 @@ const PublicCatalogPage = () => {
 								</div>
 							</div>
 
-							{/* Call to Actions */}
-							<div className="pt-6 mt-6 border-t border-border/10 space-y-2">
+							{/* Call to Actions in bold black outlines */}
+							<div className="pt-6 mt-6 border-t border-gray-100 space-y-2">
 								<a
 									href={getWhatsAppLink(selectedProduct, purchaseQty)}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="w-full flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-6 py-4 text-xs font-bold uppercase tracking-widest text-white shadow-lg shadow-emerald-600/10 hover:bg-emerald-500 transition-all active:scale-98"
+									className="w-full flex items-center justify-center gap-2 bg-black text-white px-6 py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-gray-800 transition-all rounded-none"
 								>
-									<FiPhone /> Garantir no WhatsApp
+									<FiPhone /> Fechar Pedido via WhatsApp
 								</a>
-
-								{franchise.telegram_username && (
-									<a
-										href={getTelegramLink(selectedProduct, purchaseQty)}
-										target="_blank"
-										rel="noopener noreferrer"
-										className="w-full flex items-center justify-center gap-2 rounded-2xl border border-border/60 bg-transparent px-6 py-3.5 text-xs font-bold uppercase tracking-widest text-foreground hover:bg-muted transition-all active:scale-98"
-									>
-										Reservar via Telegram
-									</a>
-								)}
 							</div>
 						</motion.div>
 					</div>
 				)}
 			</AnimatePresence>
 
-			{/* Footer / Store Details Section */}
-			<footer className="bg-[#08080a] border-t border-border/10 py-16 px-6 sm:px-12 text-muted-foreground text-xs relative">
-				<div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+			{/* Premium Deep Black Footer inspired directly by official footer */}
+			<footer className="bg-black text-white py-16 px-6 sm:px-12 text-xs relative">
+				<div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
+					
+					{/* Col 1: Brand Info */}
 					<div className="space-y-4">
-						<div className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#d4af37]">
-							Sobre a Franquia
+						<svg className="h-9 w-auto text-white fill-current" viewBox="0 0 350 70" xmlns="http://www.w3.org/2000/svg">
+							<path d="M12,28 L18,12 L30,20 L42,12 L48,28 L40,48 L20,48 Z" fill="currentColor" />
+							<path d="M18,52 L42,52 L45,60 L15,60 Z" fill="currentColor" />
+							<text x="64" y="49" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="900" font-size="34" letter-spacing="4">STANLEY</text>
+							<text x="295" y="49" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="300" font-size="16" letter-spacing="2">1913</text>
+						</svg>
+						<p className="leading-relaxed text-[11px] text-gray-400 max-w-xs">
+							Esta página é um catálogo de vendas oficial da franquia Stanley 1913. Os produtos, estoque físico e preços de venda são atualizados via integração CIGAM ERP da loja.
+						</p>
+						
+						{/* Social Icons exactly like official site */}
+						<div className="flex items-center gap-4 pt-2">
+							<a href={`https://instagram.com/${franchise.instagram_handle || 'stanley.df'}`} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white text-base">
+								<FiInstagram />
+							</a>
+							<a href={franchise.maps_url} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white text-base">
+								<FiMapPin />
+							</a>
 						</div>
-						<h4 className="text-sm font-bold text-foreground">{franchise.name}</h4>
-						<p className="leading-relaxed opacity-75 max-w-sm">
-							Esta página é um catálogo digital oficial da franquia Stanley. Todos os preços e níveis de estoque exibidos são consultados em tempo real através do CIGAM ERP da loja.
+					</div>
+
+					{/* Col 2: Endereço */}
+					<div className="space-y-4">
+						<div className="text-[10px] font-bold uppercase tracking-[0.2em] text-white">
+							Endereço Físico
+						</div>
+						<p className="leading-relaxed text-[11px] text-gray-400 flex items-start gap-2">
+							<FiMapPin className="mt-0.5 text-white flex-shrink-0" />
+							<span>{franchise.address}</span>
 						</p>
 					</div>
 
+					{/* Col 3: Funcionamento */}
 					<div className="space-y-4">
-						<div className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#d4af37]">
-							Horários & Endereço
+						<div className="text-[10px] font-bold uppercase tracking-[0.2em] text-white">
+							Horários de Loja
 						</div>
-						<div className="space-y-2">
-							<div className="flex items-start gap-2">
-								<FiMapPin className="mt-0.5 text-primary" />
-								<span className="leading-relaxed">{franchise.address}</span>
-							</div>
-							<div className="flex items-center gap-2">
-								<FiClock className="text-primary" />
-								<span>{franchise.working_hours}</span>
+						<p className="leading-relaxed text-[11px] text-gray-400 flex items-start gap-2">
+							<FiClock className="mt-0.5 text-white flex-shrink-0" />
+							<span>{franchise.working_hours}</span>
+						</p>
+					</div>
+
+					{/* Col 4: Suporte e Contato */}
+					<div className="space-y-4">
+						<div className="text-[10px] font-bold uppercase tracking-[0.2em] text-white">
+							Atendimento Direto
+						</div>
+						<div className="space-y-3">
+							<a
+								href={`https://api.whatsapp.com/send?phone=${franchise.whatsapp_number.replace(/\D/g, '')}&text=Ol%C3%A1!%20Estou%20no%20cat%C3%A1logo%20digital.`}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="inline-flex items-center gap-2 border border-white bg-transparent px-5 py-2.5 text-[9px] font-bold uppercase tracking-widest text-white hover:bg-white hover:text-black transition-all rounded-none"
+							>
+								<FiPhone /> Chamar Vendedor
+							</a>
+							<div className="text-[10px] text-gray-400">
+								WhatsApp da Franquia: <br />
+								<strong className="text-white text-xs">{franchise.whatsapp_number}</strong>
 							</div>
 						</div>
 					</div>
 
-					<div className="space-y-4">
-						<div className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#d4af37]">
-							Contato & Redes Sociais
-						</div>
-						<div className="space-y-2.5">
-							<div className="flex items-center gap-2">
-								<FiPhone className="text-emerald-500" />
-								<span className="text-foreground font-semibold">{franchise.whatsapp_number}</span>
-							</div>
-							{franchise.instagram_handle && (
-								<a
-									href={`https://instagram.com/${franchise.instagram_handle}`}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="flex items-center gap-2 hover:text-[#d4af37] transition-colors"
-								>
-									<FiInstagram className="text-pink-500" />
-									<span>@{franchise.instagram_handle}</span>
-								</a>
-							)}
-						</div>
-					</div>
 				</div>
 
-				<div className="max-w-6xl mx-auto pt-10 mt-10 border-t border-border/10 text-center opacity-50 text-[10px] uppercase tracking-widest">
-					Made with ❤️ by Sark — Stanley Portal © {new Date().getFullYear()}
+				<div className="max-w-7xl mx-auto pt-10 mt-10 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4 text-gray-500 text-[10px] uppercase tracking-widest">
+					<div>
+						© {new Date().getFullYear()} Stanley 1913 BR. Todos os direitos reservados.
+					</div>
+					<div>
+						Made with ❤️ by Sark — Stanley Portal
+					</div>
 				</div>
 			</footer>
 		</div>
