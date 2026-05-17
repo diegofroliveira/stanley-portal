@@ -292,9 +292,9 @@ const FranchiseSettingsPage = () => {
 											value={formName}
 											onChange={e => {
 												setFormName(e.target.value);
-												// Auto slugify on create
+												// Auto slugify on create with brand-compliant prefix
 												if (modal.type === 'create') {
-													setFormSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''));
+													setFormSlug('stanley1913-' + e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''));
 												}
 											}}
 											required

@@ -31,12 +31,12 @@ const PublicCatalogPage = () => {
 				let loc = await getFranchiseBySlug(slug);
 				if (!loc) {
 					// High-fidelity fallback configuration if table migrations are not executed yet
-					if (slug === 'brasilia-shopping') {
+					if (slug === 'brasilia-shopping' || slug === 'stanley1913-brasilia-shopping') {
 						loc = {
 							id: 'default-brasilia-shopping',
 							tenant_id: 'eeb741b7-8c0c-4890-b390-75a23b558977', // Stanley Tenant ID
-							slug: 'brasilia-shopping',
-							name: 'Stanley Brasília Shopping',
+							slug: 'stanley1913-brasilia-shopping',
+							name: 'Stanley 1913 Brasília Shopping',
 							location_name: 'Brasília Shopping',
 							whatsapp_number: '5561999999999',
 							address: 'SCN Quadra 5, Bloco A - Asa Norte, Brasília - DF, 70715-900',
@@ -44,12 +44,12 @@ const PublicCatalogPage = () => {
 							instagram_handle: 'stanley.df',
 							working_hours: 'Segunda a Sábado: 10h às 22h | Domingo: 14h às 20h'
 						};
-					} else if (slug === 'park-shopping') {
+					} else if (slug === 'park-shopping' || slug === 'stanley1913-park-shopping') {
 						loc = {
 							id: 'default-park-shopping',
 							tenant_id: 'eeb741b7-8c0c-4890-b390-75a23b558977', // Stanley Tenant ID
-							slug: 'park-shopping',
-							name: 'Stanley Park Shopping',
+							slug: 'stanley1913-park-shopping',
+							name: 'Stanley 1913 Park Shopping',
 							location_name: 'Park Shopping',
 							whatsapp_number: '5561999999999',
 							address: 'SAI/SO Área Octogonal - Guará, Brasília - DF, 71219-900',
