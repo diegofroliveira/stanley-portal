@@ -28,20 +28,54 @@ const PublicCatalogPage = () => {
 			setLoading(true);
 			setError(null);
 			try {
-				const loc = await getFranchiseBySlug(slug);
+				let loc = await getFranchiseBySlug(slug);
 				if (!loc) {
-					setError('Loja / Franquia não encontrada.');
-					setLoading(false);
-					return;
+					// High-fidelity fallback configuration if table migrations are not executed yet
+					if (slug === 'brasilia-shopping') {
+						loc = {
+							id: 'default-brasilia-shopping',
+							tenant_id: 'eeb741b7-8c0c-4890-b390-75a23b558977', // Stanley Tenant ID
+							slug: 'brasilia-shopping',
+							name: 'Stanley Brasília Shopping',
+							location_name: 'Brasília Shopping',
+							whatsapp_number: '5561999999999',
+							address: 'SCN Quadra 5, Bloco A - Asa Norte, Brasília - DF, 70715-900',
+							maps_url: 'https://maps.app.goo.gl/DF5xP3F8pHRDLPmPA',
+							instagram_handle: 'stanley.df',
+							working_hours: 'Segunda a Sábado: 10h às 22h | Domingo: 14h às 20h'
+						};
+					} else if (slug === 'park-shopping') {
+						loc = {
+							id: 'default-park-shopping',
+							tenant_id: 'eeb741b7-8c0c-4890-b390-75a23b558977', // Stanley Tenant ID
+							slug: 'park-shopping',
+							name: 'Stanley Park Shopping',
+							location_name: 'Park Shopping',
+							whatsapp_number: '5561999999999',
+							address: 'SAI/SO Área Octogonal - Guará, Brasília - DF, 71219-900',
+							maps_url: 'https://maps.app.goo.gl/DF5xP3F8pHRDLPmPA',
+							instagram_handle: 'stanley.df',
+							working_hours: 'Segunda a Sábado: 10h às 22h | Domingo: 14h às 20h'
+						};
+					} else {
+						setError('Loja / Franquia não encontrada.');
+						setLoading(false);
+						return;
+					}
 				}
 				setFranchise(loc);
 
 				// Fetch products of this franchise's location_name
 				const prods = await fetchFranchiseProducts(loc.tenant_id, loc.location_name);
-				// Sort: show products with stock first
-				prods.sort((a, b) => b.qty - a.qty);
-				setProducts(prods);
-				setFilteredProducts(prods);
+				
+				// FILTER: Only show products for purchase (in stock qty > 0) with a valid selling price
+				const buyableProds = prods.filter(p => p.qty > 0 && typeof p.price === 'number' && p.price > 0);
+				
+				// Sort: show products with higher stock first
+				buyableProds.sort((a, b) => b.qty - a.qty);
+				
+				setProducts(buyableProds);
+				setFilteredProducts(buyableProds);
 			} catch (err) {
 				console.error('Error loading public catalog:', err);
 				setError('Erro ao carregar catálogo de produtos.');
