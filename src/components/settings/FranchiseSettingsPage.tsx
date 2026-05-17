@@ -27,6 +27,9 @@ const FranchiseSettingsPage = () => {
 	const [formMapsUrl, setFormMapsUrl] = useState('');
 	const [formInstagram, setFormInstagram] = useState('');
 	const [formWorkingHours, setFormWorkingHours] = useState('Segunda a Sábado: 10h às 22h | Domingo: 14h às 20h');
+	const [formBannerCampaign, setFormBannerCampaign] = useState('legionarios');
+	const [formBannerTitle, setFormBannerTitle] = useState('');
+	const [formBannerSubtitle, setFormBannerSubtitle] = useState('');
 
 	const loadFranchises = async () => {
 		if (!tenantId) return;
@@ -55,6 +58,9 @@ const FranchiseSettingsPage = () => {
 		setFormMapsUrl('');
 		setFormInstagram('');
 		setFormWorkingHours('Segunda a Sábado: 10h às 22h | Domingo: 14h às 20h');
+		setFormBannerCampaign('legionarios');
+		setFormBannerTitle('');
+		setFormBannerSubtitle('');
 		setError(null);
 		setModal({ type: 'create' });
 	};
@@ -69,6 +75,9 @@ const FranchiseSettingsPage = () => {
 		setFormMapsUrl(loc.maps_url);
 		setFormInstagram(loc.instagram_handle || '');
 		setFormWorkingHours(loc.working_hours);
+		setFormBannerCampaign(loc.banner_campaign || 'legionarios');
+		setFormBannerTitle(loc.banner_title || '');
+		setFormBannerSubtitle(loc.banner_subtitle || '');
 		setError(null);
 		setModal({ type: 'edit', location: loc });
 	};
@@ -98,6 +107,9 @@ const FranchiseSettingsPage = () => {
 				maps_url: formMapsUrl,
 				instagram_handle: formInstagram || undefined,
 				working_hours: formWorkingHours,
+				banner_campaign: formBannerCampaign,
+				banner_title: formBannerTitle || undefined,
+				banner_subtitle: formBannerSubtitle || undefined,
 			};
 
 			if (modal?.type === 'edit' && modal.location) {
@@ -264,7 +276,7 @@ const FranchiseSettingsPage = () => {
 							initial={{ opacity: 0, scale: 0.95, y: 20 }}
 							animate={{ opacity: 1, scale: 1, y: 0 }}
 							exit={{ opacity: 0, scale: 0.95, y: 20 }}
-							className="relative w-full max-w-lg overflow-hidden rounded-[2rem] border border-border/50 bg-card p-8 shadow-2xl z-10 max-h-[90vh] overflow-y-auto"
+							className="relative w-full max-w-xl overflow-hidden rounded-[2rem] border border-border/50 bg-card p-8 shadow-2xl z-10 max-h-[90vh] overflow-y-auto"
 						>
 							<div className="flex items-center justify-between mb-6">
 								<h2 className="text-xl font-bold tracking-tight">
@@ -387,32 +399,101 @@ const FranchiseSettingsPage = () => {
 										/>
 									</div>
 
-									<div>
-										<label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
-											Link do Google Maps
-										</label>
-										<input
-											type="url"
-											value={formMapsUrl}
-											onChange={e => setFormMapsUrl(e.target.value)}
-											required
-											className="mt-1 w-full rounded-2xl border border-border/50 bg-muted/30 px-4 py-3 text-xs outline-none focus:border-primary"
-											placeholder="ex: https://maps.app.goo.gl/..."
-										/>
+									<div className="grid grid-cols-2 gap-3">
+										<div>
+											<label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
+												Link do Google Maps
+											</label>
+											<input
+												type="url"
+												value={formMapsUrl}
+												onChange={e => setFormMapsUrl(e.target.value)}
+												required
+												className="mt-1 w-full rounded-2xl border border-border/50 bg-muted/30 px-4 py-3 text-xs outline-none focus:border-primary"
+												placeholder="ex: https://maps.app.goo.gl/..."
+											/>
+										</div>
+										<div>
+											<label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
+												Horário de Funcionamento
+											</label>
+											<input
+												type="text"
+												value={formWorkingHours}
+												onChange={e => setFormWorkingHours(e.target.value)}
+												required
+												className="mt-1 w-full rounded-2xl border border-border/50 bg-muted/30 px-4 py-3 text-xs outline-none focus:border-primary"
+												placeholder="ex: Segunda a Sábado: 10h às 22h | Domingo: 14h às 20h"
+											/>
+										</div>
 									</div>
 
-									<div>
-										<label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
-											Horário de Funcionamento
-										</label>
-										<input
-											type="text"
-											value={formWorkingHours}
-											onChange={e => setFormWorkingHours(e.target.value)}
-											required
-											className="mt-1 w-full rounded-2xl border border-border/50 bg-muted/30 px-4 py-3 text-xs outline-none focus:border-primary"
-											placeholder="ex: Segunda a Sábado: 10h às 22h | Domingo: 14h às 20h"
-										/>
+									{/* Banner Campaign Settings */}
+									<div className="border-t border-border/20 pt-4 mt-2">
+										<h3 className="text-xs font-black uppercase tracking-wider text-primary mb-3">
+											🖥️ Campanha & Banner do Catálogo
+										</h3>
+										
+										<div className="grid grid-cols-3 gap-2 mb-3">
+											{[
+												{ id: 'legionarios', label: 'Legionários 🎖️' },
+												{ id: 'copa', label: 'Copa do Mundo ⚽' },
+												{ id: 'custom', label: 'Personalizado ⚙' }
+											].map((camp) => (
+												<button
+													key={camp.id}
+													type="button"
+													onClick={() => {
+														setFormBannerCampaign(camp.id);
+														if (camp.id === 'legionarios') {
+															setFormBannerTitle('VEM AÍ... ANIVERSÁRIO LEGIONÁRIOS.');
+															setFormBannerSubtitle(`Explore os copos, garrafas e canecas Stanley originais em estoque.`);
+														} else if (camp.id === 'copa') {
+															setFormBannerTitle('COPA DO MUNDO STANLEY 1913');
+															setFormBannerSubtitle('Torça com a temperatura perfeita! Copos e canecas térmicas originais para comemorar cada gol.');
+														}
+													}}
+													className={`rounded-xl p-3 text-[10px] font-bold uppercase tracking-widest text-center transition-all ${
+														formBannerCampaign === camp.id
+															? 'border-2 border-primary bg-primary/10 text-foreground scale-102 font-black shadow-md shadow-primary/10'
+															: 'border border-border/30 bg-muted/20 text-muted-foreground hover:bg-muted/40'
+													}`}
+												>
+													{camp.label}
+												</button>
+											))}
+										</div>
+
+										{formBannerCampaign === 'custom' && (
+											<div className="space-y-3 mt-3 animate-fade-in">
+												<div>
+													<label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
+														Título do Banner (Customizado)
+													</label>
+													<input
+														type="text"
+														value={formBannerTitle}
+														onChange={e => setFormBannerTitle(e.target.value)}
+														required
+														className="mt-1 w-full rounded-2xl border border-border/50 bg-muted/30 px-4 py-3 text-xs outline-none focus:border-primary"
+														placeholder="ex: CLÁSSICOS STANLEY DE VOLTA"
+													/>
+												</div>
+												<div>
+													<label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
+														Subtítulo do Banner (Customizado)
+													</label>
+													<textarea
+														value={formBannerSubtitle}
+														onChange={e => setFormBannerSubtitle(e.target.value)}
+														required
+														rows={2}
+														className="mt-1 w-full rounded-2xl border border-border/50 bg-muted/30 px-4 py-3 text-xs outline-none focus:border-primary resize-none"
+														placeholder="ex: Aproveite os melhores copos e garrafas térmicas originais com frete grátis."
+													/>
+												</div>
+											</div>
+										)}
 									</div>
 								</div>
 

@@ -81,6 +81,9 @@ export interface FranchiseLocation {
 	maps_url: string;
 	instagram_handle?: string;
 	working_hours: string;
+	banner_campaign?: string;
+	banner_title?: string;
+	banner_subtitle?: string;
 	created_at?: string;
 	updated_at?: string;
 }

@@ -214,15 +214,49 @@ const PublicCatalogPage = () => {
 				<div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-8">
 					<div className="space-y-6 text-left max-w-xl">
 						<div className="inline-flex items-center gap-2 border border-black bg-white px-4 py-1 text-[9px] font-bold uppercase tracking-widest text-black">
-							⚡ Pronta Entrega na Loja
+							{franchise.banner_campaign === 'copa' 
+								? '⚽ Campanha de Copa Stanley'
+								: franchise.banner_campaign === 'custom' 
+									? '✨ Oferta Especial Exclusiva'
+									: '⚡ Pronta Entrega na Loja'
+							}
 						</div>
 						<h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-black leading-[0.95] font-sans">
-							VEM AÍ... <br />
-							<span className="text-[#000000]">Aniversário</span> <br />
-							<span className="text-gray-400">Legionários.</span>
+							{franchise.banner_campaign === 'copa' ? (
+								<>
+									COPA DO <br />
+									<span className="text-emerald-700">MUNDO</span> <br />
+									<span className="text-yellow-600">STANLEY.</span>
+								</>
+							) : franchise.banner_campaign === 'custom' && franchise.banner_title ? (
+								<>
+									{franchise.banner_title.split(' ').length > 2 ? (
+										<>
+											{franchise.banner_title.split(' ').slice(0, -2).join(' ')} <br />
+											<span className="text-gray-500">
+												{franchise.banner_title.split(' ').slice(-2).join(' ')}.
+											</span>
+										</>
+									) : (
+										franchise.banner_title
+									)}
+								</>
+							) : (
+								<>
+									VEM AÍ... <br />
+									<span className="text-[#000000]">Aniversário</span> <br />
+									<span className="text-gray-400">Legionários.</span>
+								</>
+							)}
 						</h2>
 						<p className="text-xs sm:text-sm text-gray-600 leading-relaxed font-medium">
-							Explore os copos, garrafas e canecas Stanley originais em estoque no <strong>{franchise.name}</strong>. Compre online via WhatsApp com atendimento personalizado e retirada expressa!
+							{franchise.banner_campaign === 'copa' ? (
+								franchise.banner_subtitle || `Torça com a temperatura perfeita! Copos e canecas térmicas originais para comemorar cada gol da seleção em estoque no ${franchise.name}.`
+							) : franchise.banner_campaign === 'custom' && franchise.banner_subtitle ? (
+								franchise.banner_subtitle
+							) : (
+								`Explore os copos, garrafas e canecas Stanley originais em estoque no ${franchise.name}. Compre online via WhatsApp com atendimento personalizado e retirada expressa!`
+							)}
 						</p>
 						<div className="flex flex-wrap gap-3 pt-2">
 							<a
